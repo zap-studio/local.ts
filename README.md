@@ -158,14 +158,33 @@ If you don't need system tray functionality, you can remove it:
 
 3. **Remove the module and setup call** from `src-tauri/src/lib.rs`:
 
-   ```rust
-   #[cfg_attr(mobile, tauri::mobile_entry_point)]
-   pub fn run() {
-       tauri::Builder::default()
-           .plugin(tauri_plugin_opener::init())
-           .run(tauri::generate_context!())
-           .expect("error while running tauri application");
-   }
+   ```diff
+   - mod system_tray;
+
+     #[cfg_attr(mobile, tauri::mobile_entry_point)]
+     pub fn run() {
+         tauri::Builder::default()
+             .plugin(tauri_plugin_opener::init())
+             .setup(|app| {
+                 logging::init(app);
+   -             plugins::system_tray::setup(app, &pool)?;
+                 Ok(())
+             })
+             .run(tauri::generate_context!())
+             .expect("error while running tauri application");
+     }
+   ```
+
+5. **Remove the system tray command** from the invoke handler in `src-tauri/src/lib.rs`:
+
+   ```diff
+     .invoke_handler(tauri::generate_handler![
+         commands::settings::get_app_settings,
+         commands::settings::update_app_settings,
+   -     commands::settings::set_tray_visible,
+         commands::window::close_splashscreen,
+         commands::notifications::are_notifications_enabled,
+     ])
    ```
 
 For more details on system tray customization, see the [Tauri System Tray documentation](https://tauri.app/learn/system-tray/).
@@ -383,7 +402,7 @@ The Settings page allows users to toggle logging and set the minimum log level (
 
 If you don't need logging functionality, you can remove it:
 
-1. **Delete the logging module**: Remove `src-tauri/src/logging.rs`
+1. **Delete the logging module**: Remove `src-tauri/src/plugins/logging.rs`
 
 2. **Remove the dependency** from `src-tauri/Cargo.toml`:
 
@@ -395,22 +414,26 @@ If you don't need logging functionality, you can remove it:
 3. **Remove the plugin and module** from `src-tauri/src/lib.rs`:
 
    ```diff
-   - mod logging;
-
      .plugin(tauri_plugin_opener::init())
-   - .plugin(logging::build().build())
+   - .plugin(plugins::logging::build().build())
      .setup(|app| {
-   -     logging::init(app);
-         system_tray::setup(app)?;
+   -     plugins::logging::init(app);
    ```
 
-4. **Remove the permission** from `src-tauri/capabilities/default.json`:
+4. **Update the plugins module** — Edit `src-tauri/src/plugins/mod.rs`:
+
+   ```diff
+   - pub mod logging;
+     pub mod system_tray;
+   ```
+
+5. **Remove the permission** from `src-tauri/capabilities/default.json`:
 
    ```diff
    - "log:default"
    ```
 
-5. **Remove the JavaScript package**:
+6. **Remove the JavaScript package**:
 
    ```bash
    pnpm remove @tauri-apps/plugin-log
@@ -916,32 +939,6 @@ For more details on window configuration, see the [Tauri Window documentation](h
 
 ## App Settings
 
-```diff
-- import { invoke } from "@tauri-apps/api/core";
-
-useEffect(() => {
-  const init = async () => {
-    try {
-      await initializeSettings();
-      initializeTheme();
-      setIsInitialized(true);
--
--     // Close splash screen and show main window
--     await invoke("close_splashscreen");
-    } catch (err) {
-      console.error("Failed to initialize stores:", err);
-      setError(err instanceof Error ? err : new Error("Unknown error"));
--
--     // Still close splash screen on error to show error UI
--     await invoke("close_splashscreen").catch(console.error);
-    }
-  };
-```
-
-For more details on Tauri's multi-window setup, see the [Tauri Window documentation](https://tauri.app/develop/window/).
-
-## App Settings
-
 This starter kit includes a complete settings system with a pre-built settings page, persistent storage in SQLite, and theme support out of the box.
 
 ### What's Included
@@ -1316,17 +1313,20 @@ If you don't need database functionality, you can remove it:
 3. **Update `src-tauri/src/lib.rs`**:
 
    ```diff
+     mod commands;
    - mod database;
-   - use tauri::Manager;
+     mod plugins;
 
      .setup(|app| {
-         logging::init(app);
-   -
+         plugins::logging::init(app);
+
    -     // Initialize database and manage the connection pool
    -     let pool = database::init(app.handle())?;
-   -     app.manage(pool);
+   -     app.manage(pool.clone());
    -
-         system_tray::setup(app)?;
+   -     plugins::system_tray::setup(app, &pool)?;
+   +     plugins::system_tray::setup(app)?;
+
          Ok(())
      })
    ```
