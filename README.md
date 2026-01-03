@@ -334,13 +334,13 @@ The notification system uses the [Tauri Notification Plugin](https://tauri.app/p
 
 ### Default Channels
 
-| Channel      | Description                                   | Importance | Default |
-| ------------ | --------------------------------------------- | ---------- | ------- |
-| **General**  | App announcements, tips, and feature updates  | Default    | On      |
-| **Reminders**| Time-sensitive reminders and scheduled tasks  | High       | On      |
-| **Updates**  | App updates and version announcements         | Low        | On      |
-| **Alerts**   | Critical system alerts and security warnings  | High       | On      |
-| **Activity** | Background task progress and sync status      | Min        | Off     |
+| Channel       | Description                                  | Importance | Default |
+| ------------- | -------------------------------------------- | ---------- | ------- |
+| **General**   | App announcements, tips, and feature updates | Default    | On      |
+| **Reminders** | Time-sensitive reminders and scheduled tasks | High       | On      |
+| **Updates**   | App updates and version announcements        | Low        | On      |
+| **Alerts**    | Critical system alerts and security warnings | High       | On      |
+| **Activity**  | Background task progress and sync status     | Min        | Off     |
 
 ### Usage from JavaScript
 
