@@ -56,6 +56,7 @@ After cloning this starter kit, update the following files to match your project
 The app's window configuration is defined in `src-tauri/tauri.conf.json` under `app.windows`. This starter includes two windows:
 
 **Main Window:**
+
 ```json
 {
   "title": "Local.ts",
@@ -67,6 +68,7 @@ The app's window configuration is defined in `src-tauri/tauri.conf.json` under `
 ```
 
 **Splash Screen Window:**
+
 ```json
 {
   "title": "Loading...",
@@ -434,6 +436,7 @@ The splash screen uses Tauri's multi-window feature defined in `src-tauri/tauri.
 2. **Splash screen** (`splash.html`) — Minimalist HTML with app title and description, styled to match your theme
 
 3. **Initialization flow**:
+
    ```
    App Launch → Splash shows, Main hidden
                     ↓
@@ -472,6 +475,7 @@ The splash uses CSS custom properties from your theme (`src/styles/globals.css`)
 ```
 
 **Add animations or logo** — Modify the `<style>` section in `splash.html` to add:
+
 - Loading spinners
 - Fade-in animations
 - Your app logo/icon
@@ -553,27 +557,27 @@ For more details on window configuration, see the [Tauri Window documentation](h
 
 ## App Settings
 
-   ```diff
-   - import { invoke } from "@tauri-apps/api/core";
+```diff
+- import { invoke } from "@tauri-apps/api/core";
 
-   useEffect(() => {
-     const init = async () => {
-       try {
-         await initializeSettings();
-         initializeTheme();
-         setIsInitialized(true);
-   -
-   -     // Close splash screen and show main window
-   -     await invoke("close_splashscreen");
-       } catch (err) {
-         console.error("Failed to initialize stores:", err);
-         setError(err instanceof Error ? err : new Error("Unknown error"));
-   -
-   -     // Still close splash screen on error to show error UI
-   -     await invoke("close_splashscreen").catch(console.error);
-       }
-     };
-   ```
+useEffect(() => {
+  const init = async () => {
+    try {
+      await initializeSettings();
+      initializeTheme();
+      setIsInitialized(true);
+-
+-     // Close splash screen and show main window
+-     await invoke("close_splashscreen");
+    } catch (err) {
+      console.error("Failed to initialize stores:", err);
+      setError(err instanceof Error ? err : new Error("Unknown error"));
+-
+-     // Still close splash screen on error to show error UI
+-     await invoke("close_splashscreen").catch(console.error);
+    }
+  };
+```
 
 For more details on Tauri's multi-window setup, see the [Tauri Window documentation](https://tauri.app/develop/window/).
 
