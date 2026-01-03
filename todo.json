@@ -15,11 +15,6 @@
     "completed": false
   },
   {
-    "id": 9,
-    "task": "add tailwind to tauri app",
-    "completed": false
-  },
-  {
     "id": 10,
     "task": "add shadcn/ui components with base ui",
     "completed": false
