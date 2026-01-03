@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 
 import { isTauri } from "@/lib/platform";
+import { initializeNotificationChannels } from "@/lib/tauri/notifications/channels";
 import { useSettings } from "@/stores/settings";
 import { useTheme } from "@/stores/theme";
 
@@ -25,6 +26,12 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
       try {
         await initializeSettings();
         initializeTheme();
+
+        // Initialize notification channels (non-blocking)
+        initializeNotificationChannels().catch((err) => {
+          console.warn("Failed to initialize notification channels:", err);
+        });
+
         setIsInitialized(true);
 
         // Close splash screen and show main window
