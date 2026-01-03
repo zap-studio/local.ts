@@ -8,6 +8,7 @@ A starter kit for building local-first applications for mobile and desktop.
 - **Cross-platform** — Build for macOS, Windows, Linux, iOS, and Android
 - **Lightweight** — Native performance with a small bundle size
 - **Secure** — Built-in Content Security Policy and Tauri's security model
+- **Splash Screen** — Elegant loading screen while app initializes
 - **App Settings** — Persistent settings with theme, behavior, and developer options
 - **System Tray** — Built-in system tray with show/hide and quit actions
 - **Autostart** — Launch at login with user-configurable settings
@@ -377,7 +378,121 @@ If you don't need window state persistence, you can remove it:
 
 For more details on window state customization, see the [Tauri Window State documentation](https://tauri.app/plugin/window-state/).
 
-## App Settings
+## Splash Screen
+
+This starter kit includes a splash screen that displays while your app initializes — providing a polished user experience and preventing users from seeing an empty window during startup.
+
+### What's Included
+
+The splash screen is configured in `src-tauri/tauri.conf.json` and provides:
+
+- **Minimal design** — Clean, theme-aware splash screen matching your app's aesthetic
+- **Automatic display** — Shows immediately on app launch
+- **Hidden main window** — Main window stays hidden until stores are initialized
+- **Seamless transition** — Automatically closes splash and shows main window when ready
+- **Error handling** — Closes splash even if initialization fails, showing error UI
+
+### How It Works
+
+The splash screen uses Tauri's multi-window feature:
+
+1. Defined in `tauri.conf.json`:
+   - `splashscreen` — Visible on launch
+
+2. **Splash HTML** at `splash.html` — Minimalist design with app title and description
+
+3. **Initialization flow**:
+   - App starts, splash screen shows
+   - Main window hidden
+   - Store initializer loads settings and theme
+   - Once ready, calls `close_splashscreen` command
+   - Splash closes, main window shows and focuses
+
+### Customizing the Splash Screen
+
+Edit `splash.html` to customize the appearance:
+
+```html
+<div class="container">
+   <h1 class="text-2xl font-bold text-foreground">Your App Name</h1>
+   <p class="mt-2 text-muted-foreground">Your App Description</p>
+</div>
+```
+
+The splash screen uses your app's theme colors (defined in `src/styles/globals.css`) and automatically adapts to light/dark mode.
+
+### Removing the Splash Screen
+
+If you don't want a splash screen:
+
+1. **Update `tauri.conf.json`** to show the main window immediately:
+
+   ```diff
+     "windows": [
+   -   {
+   -     "title": "Loading...",
+   -     "label": "splashscreen",
+   -     "width": 400,
+   -     "height": 300,
+   -     "center": true,
+   -     "decorations": false,
+   -     "transparent": true,
+   -     "alwaysOnTop": true,
+   -     "resizable": false,
+   -     "url": "splash.html"
+   -   }
+     ]
+   ```
+
+2. **Delete the splash screen file**: Remove `splash.html`
+
+3. **Remove the window command**: Delete `src-tauri/src/commands/window.rs`
+
+4. **Update `src-tauri/src/commands/mod.rs`**:
+
+   ```diff
+   pub mod settings;
+   - pub mod window;
+   ```
+
+5. **Unregister the command** in `src-tauri/src/lib.rs`:
+
+   ```diff
+   .invoke_handler(tauri::generate_handler![
+       commands::settings::get_app_settings,
+       commands::settings::update_app_settings,
+       commands::settings::set_tray_visible,
+   -   commands::window::close_splashscreen,
+   ])
+   ```
+
+6. **Remove splash logic** from `src/components/store-initializer.tsx`:
+
+   ```diff
+   - import { invoke } from "@tauri-apps/api/core";
+
+   useEffect(() => {
+     const init = async () => {
+       try {
+         await initializeSettings();
+         initializeTheme();
+         setIsInitialized(true);
+   -
+   -     // Close splash screen and show main window
+   -     await invoke("close_splashscreen");
+       } catch (err) {
+         console.error("Failed to initialize stores:", err);
+         setError(err instanceof Error ? err : new Error("Unknown error"));
+   -
+   -     // Still close splash screen on error to show error UI
+   -     await invoke("close_splashscreen").catch(console.error);
+       }
+     };
+   ```
+
+For more details on Tauri's multi-window setup, see the [Tauri Window documentation](https://tauri.app/develop/window/).
+
+## Logging
 
 This starter kit includes a complete settings system with a pre-built settings page, persistent storage in SQLite, and theme support out of the box.
 
