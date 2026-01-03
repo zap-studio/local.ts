@@ -79,6 +79,12 @@ pub struct SettingsRow {
     pub launch_at_login: i32,
     pub enable_logging: i32,
     pub log_level: String,
+    pub enable_notifications: i32,
+    pub notify_general: i32,
+    pub notify_reminders: i32,
+    pub notify_updates: i32,
+    pub notify_alerts: i32,
+    pub notify_activity: i32,
 }
 
 /// Application settings with typed enums
@@ -91,6 +97,12 @@ pub struct Settings {
     pub launch_at_login: bool,
     pub enable_logging: bool,
     pub log_level: LogLevel,
+    pub enable_notifications: bool,
+    pub notify_general: bool,
+    pub notify_reminders: bool,
+    pub notify_updates: bool,
+    pub notify_alerts: bool,
+    pub notify_activity: bool,
 }
 
 impl Settings {
@@ -103,6 +115,12 @@ impl Settings {
             launch_at_login: int_to_bool(row.launch_at_login),
             enable_logging: int_to_bool(row.enable_logging),
             log_level: LogLevel::from_str(&row.log_level)?,
+            enable_notifications: int_to_bool(row.enable_notifications),
+            notify_general: int_to_bool(row.notify_general),
+            notify_reminders: int_to_bool(row.notify_reminders),
+            notify_updates: int_to_bool(row.notify_updates),
+            notify_alerts: int_to_bool(row.notify_alerts),
+            notify_activity: int_to_bool(row.notify_activity),
         })
     }
 }
@@ -117,6 +135,12 @@ pub struct SettingsUpdate {
     pub launch_at_login: Option<bool>,
     pub enable_logging: Option<bool>,
     pub log_level: Option<LogLevel>,
+    pub enable_notifications: Option<bool>,
+    pub notify_general: Option<bool>,
+    pub notify_reminders: Option<bool>,
+    pub notify_updates: Option<bool>,
+    pub notify_alerts: Option<bool>,
+    pub notify_activity: Option<bool>,
 }
 
 /// Diesel changeset for updating settings
@@ -130,6 +154,12 @@ pub struct SettingsChangeset {
     pub launch_at_login: Option<i32>,
     pub enable_logging: Option<i32>,
     pub log_level: Option<String>,
+    pub enable_notifications: Option<i32>,
+    pub notify_general: Option<i32>,
+    pub notify_reminders: Option<i32>,
+    pub notify_updates: Option<i32>,
+    pub notify_alerts: Option<i32>,
+    pub notify_activity: Option<i32>,
 }
 
 impl From<SettingsUpdate> for SettingsChangeset {
@@ -141,6 +171,12 @@ impl From<SettingsUpdate> for SettingsChangeset {
             launch_at_login: update.launch_at_login.map(bool_to_int),
             enable_logging: update.enable_logging.map(bool_to_int),
             log_level: update.log_level.map(|l| l.as_str().to_string()),
+            enable_notifications: update.enable_notifications.map(bool_to_int),
+            notify_general: update.notify_general.map(bool_to_int),
+            notify_reminders: update.notify_reminders.map(bool_to_int),
+            notify_updates: update.notify_updates.map(bool_to_int),
+            notify_alerts: update.notify_alerts.map(bool_to_int),
+            notify_activity: update.notify_activity.map(bool_to_int),
         }
     }
 }
