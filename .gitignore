@@ -25,6 +25,9 @@ dist-ssr
 # Vitest
 coverage
 
+# TanStack Router
+src/routeTree.gen.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

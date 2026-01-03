@@ -1,3 +1,4 @@
+import { Link, useLocation } from "@tanstack/react-router";
 import { Home, PanelLeft, PanelLeftClose, Settings } from "lucide-react";
 import { useState } from "react";
 
@@ -9,8 +10,7 @@ import { cn } from "@/lib/utils";
 interface SidebarItem {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
-  href?: string;
-  onClick?: () => void;
+  href: string;
 }
 
 interface SidebarProps {
@@ -96,27 +96,32 @@ interface SidebarNavItemProps {
 
 function SidebarNavItem({ item, expanded }: SidebarNavItemProps) {
   const Icon = item.icon;
+  const location = useLocation();
+  const isActive = location.pathname === item.href;
 
-  const buttonContent = (
-    <Button
-      variant="ghost"
+  const linkContent = (
+    <Link
+      to={item.href}
       className={cn(
+        "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "w-full text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-        expanded ? "justify-start gap-3 px-3" : "justify-center px-0"
+        expanded
+          ? "h-10 justify-start gap-3 px-3"
+          : "h-10 w-10 justify-center px-0",
+        isActive && "bg-sidebar-accent text-sidebar-accent-foreground"
       )}
-      size={expanded ? "default" : "icon"}
-      onClick={item.onClick}
     >
       <Icon className="size-5 shrink-0" />
       {expanded && <span className="truncate">{item.label}</span>}
-    </Button>
+    </Link>
   );
 
   if (!expanded) {
-    return <Tooltip content={item.label}>{buttonContent}</Tooltip>;
+    return <Tooltip content={item.label}>{linkContent}</Tooltip>;
   }
 
-  return buttonContent;
+  return linkContent;
 }
 
 export type { SidebarItem, SidebarProps };

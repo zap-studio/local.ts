@@ -20,6 +20,7 @@
   "dependencies": {
     "@base-ui/react": "^1.0.0",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-router": "^1.144.0",
     "@tauri-apps/api": "^2.9.1",
     "@tauri-apps/plugin-log": "^2",
     "@tauri-apps/plugin-opener": "^2.5.2",
@@ -33,6 +34,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@tanstack/router-plugin": "^1.145.2",
     "@tauri-apps/cli": "^2.9.6",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
