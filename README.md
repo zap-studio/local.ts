@@ -195,6 +195,7 @@ app.handle().plugin(tauri_plugin_autostart::init(
 ```
 
 **macOS Launcher Options:**
+
 - `LaunchAgent` — Starts when user logs in (recommended for most apps)
 - `AppleScript` — Alternative method using AppleScript
 
@@ -642,10 +643,10 @@ Window state is automatically saved when windows close using the `on_window_even
 
 State is stored in a platform-specific file:
 
-| Platform | Location                                                          |
-| -------- | ----------------------------------------------------------------- |
-| Linux    | `~/.local/share/{bundleIdentifier}/.window-state`                 |
-| macOS    | `~/Library/Application Support/{bundleIdentifier}/.window-state`  |
+| Platform | Location                                                           |
+| -------- | ------------------------------------------------------------------ |
+| Linux    | `~/.local/share/{bundleIdentifier}/.window-state`                  |
+| macOS    | `~/Library/Application Support/{bundleIdentifier}/.window-state`   |
 | Windows  | `C:\Users\{User}\AppData\Roaming\{bundleIdentifier}\.window-state` |
 
 ### Customization Options
@@ -665,6 +666,7 @@ use tauri_plugin_window_state::StateFlags;
 ```
 
 Available flags:
+
 - `StateFlags::SIZE` — Window dimensions
 - `StateFlags::POSITION` — Window location
 - `StateFlags::MAXIMIZED` — Maximized state
