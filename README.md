@@ -69,9 +69,6 @@ Current policy:
 
 **Notes:**
 
+- **Development mode:** The `connect-src` directive only allows `ipc:` and `http://ipc.localhost` by default. If you need to connect to external APIs or a local dev server with hot reload, you may need to add those URLs (e.g., `http://localhost:1420 ws://localhost:1420`) during development. Be sure to remove them for production builds.
 - If using WebAssembly, add `'wasm-unsafe-eval'` to `script-src`
 - See [Tauri CSP documentation](https://tauri.app/security/csp/) for more details
-
-## License
-
-[MIT](LICENSE)
