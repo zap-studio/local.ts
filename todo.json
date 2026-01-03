@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "task": "add turbo to synchronize build, check, lint, format, validate commands from src and src-tauri",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "task": "add 0xlint",
+    "completed": false
+  },
+  {
+    "id": 3,
+    "task": "add 0xfmt",
+    "completed": false
+  },
+  {
+    "id": 4,
+    "task": "add vitest",
+    "completed": false
+  }
+]
