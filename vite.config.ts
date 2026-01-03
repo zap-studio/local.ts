@@ -31,5 +31,10 @@ export default defineConfig(async () => ({
   },
 
   // Config for testing
-  test: {},
+  test: {
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html"],
+    },
+  },
 }));

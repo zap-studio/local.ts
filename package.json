@@ -27,6 +27,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.16",
     "oxlint": "^1.36.0",
     "turbo": "^2.7.2",
     "typescript": "^5.9.3",
