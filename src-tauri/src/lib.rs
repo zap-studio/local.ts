@@ -1,6 +1,7 @@
 mod database;
 mod logging;
 mod system_tray;
+mod window;
 
 use tauri::Manager;
 #[cfg(desktop)]
@@ -23,6 +24,7 @@ pub fn run() {
             let pool = database::init(app.handle())?;
             app.manage(pool);
 
+            window::setup(app)?;
             system_tray::setup(app)?;
             Ok(())
         })
