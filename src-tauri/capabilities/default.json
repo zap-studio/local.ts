@@ -11,9 +11,6 @@
     "autostart:allow-enable",
     "autostart:allow-disable",
     "autostart:allow-is-enabled",
-    "notification:default",
-    "notification:allow-create-channel",
-    "notification:allow-delete-channel",
-    "notification:allow-list-channels"
+    "notification:default"
   ]
 }
