@@ -9,5 +9,11 @@ diesel::table! {
         launch_at_login -> Integer,
         enable_logging -> Integer,
         log_level -> Text,
+        enable_notifications -> Integer,
+        notify_general -> Integer,
+        notify_reminders -> Integer,
+        notify_updates -> Integer,
+        notify_alerts -> Integer,
+        notify_activity -> Integer,
     }
 }
