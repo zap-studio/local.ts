@@ -2,28 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import type { LogLevel } from "@/lib/tauri/settings/types";
 
-import { Label } from "@/components/label";
 import { Select } from "@/components/select";
+import { SettingRow } from "@/components/setting-row";
+import { SettingsSection } from "@/components/settings-section";
 import { Switch } from "@/components/switch";
+import { LOG_LEVEL_OPTIONS, THEME_OPTIONS } from "@/constants/settings";
 import { useHandleSettings } from "@/hooks/use-handle-settings";
 
 export const Route = createFileRoute("/settings")({
   component: SettingsPage,
 });
-
-const themeOptions = [
-  { value: "light" as const, label: "Light" },
-  { value: "dark" as const, label: "Dark" },
-  { value: "system" as const, label: "System" },
-];
-
-const logLevelOptions = [
-  { value: "error" as const, label: "Error" },
-  { value: "warn" as const, label: "Warn" },
-  { value: "info" as const, label: "Info" },
-  { value: "debug" as const, label: "Debug" },
-  { value: "trace" as const, label: "Trace" },
-];
 
 function SettingsPage() {
   const {
@@ -74,7 +62,7 @@ function SettingsPage() {
           <Select
             value={theme}
             onValueChange={(value) => handleUpdateSetting("theme", value)}
-            options={themeOptions}
+            options={THEME_OPTIONS}
             disabled={isSaving}
             className="w-40"
           />
@@ -155,60 +143,12 @@ function SettingsPage() {
           <Select<LogLevel>
             value={settings.logLevel}
             onValueChange={(value) => handleUpdateSetting("logLevel", value)}
-            options={logLevelOptions}
+            options={LOG_LEVEL_OPTIONS}
             disabled={isSaving || !settings.enableLogging}
             className="w-40"
           />
         </SettingRow>
       </SettingsSection>
-    </div>
-  );
-}
-
-interface SettingsSectionProps {
-  title: string;
-  description: string;
-  children: React.ReactNode;
-}
-
-function SettingsSection({
-  title,
-  description,
-  children,
-}: SettingsSectionProps) {
-  return (
-    <section className="space-y-4">
-      <div className="border-b border-border pb-2">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-      <div className="space-y-4">{children}</div>
-    </section>
-  );
-}
-
-interface SettingRowProps {
-  label: string;
-  description: string;
-  htmlFor?: string;
-  children: React.ReactNode;
-}
-
-function SettingRow({
-  label,
-  description,
-  htmlFor,
-  children,
-}: SettingRowProps) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-card p-4">
-      <div className="space-y-0.5">
-        <Label htmlFor={htmlFor} className="text-base font-medium">
-          {label}
-        </Label>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-      <div className="shrink-0">{children}</div>
     </div>
   );
 }
