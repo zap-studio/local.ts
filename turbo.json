@@ -15,6 +15,9 @@
       "cache": false
     },
     "lint": {},
+    "tauri": {
+      "cache": false
+    },
     "test": {
       "cache": false
     },
