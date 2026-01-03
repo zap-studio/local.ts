@@ -14,6 +14,7 @@ A starter kit for building local-first applications for mobile and desktop.
 - **Autostart** — Launch at login with user-configurable settings
 - **Window State** — Remembers window size and position across app restarts
 - **Logging** — Configurable logging to console, webview, and log files
+- **Notifications** — Native notifications with customizable channels and permissions
 - **SQLite Database** — Diesel ORM with migrations and Tauri commands
 - **Modern stack** — React, TypeScript, Vite, Tauri, and Turborepo
 
@@ -317,6 +318,174 @@ If you don't need logging functionality, you can remove it:
    ```
 
 For more details on logging customization, see the [Tauri Logging documentation](https://tauri.app/plugin/logging/).
+
+## Notifications
+
+This starter kit includes native notification support, allowing your app to send system notifications to users with configurable channels and user preferences.
+
+### What's Included
+
+The notification system uses the [Tauri Notification Plugin](https://tauri.app/plugin/notification/) and provides:
+
+- **Native notifications** — System-level notifications on all platforms
+- **Notification channels** — Organized categories with different priority levels
+- **User preferences** — Per-channel toggle controls in Settings
+- **Permission handling** — Automatic permission requests and status checking
+
+### Default Channels
+
+| Channel      | Description                                   | Importance | Default |
+| ------------ | --------------------------------------------- | ---------- | ------- |
+| **General**  | App announcements, tips, and feature updates  | Default    | On      |
+| **Reminders**| Time-sensitive reminders and scheduled tasks  | High       | On      |
+| **Updates**  | App updates and version announcements         | Low        | On      |
+| **Alerts**   | Critical system alerts and security warnings  | High       | On      |
+| **Activity** | Background task progress and sync status      | Min        | Off     |
+
+### Usage from JavaScript
+
+```typescript
+import { notify, notifyForced } from '@/lib/tauri/notifications';
+import { useSettings } from '@/stores/settings';
+
+// Get current settings
+const settings = useSettings.getState().settings;
+
+// Send a notification (respects user preferences)
+await notify({
+  title: 'Task Complete',
+  body: 'Your export has finished',
+  channel: 'activity',
+}, settings);
+
+// Send a critical notification (bypasses channel settings)
+await notifyForced({
+  title: 'Security Alert',
+  body: 'Unusual activity detected',
+  channel: 'alerts',
+});
+```
+
+### Permission Handling
+
+```typescript
+import {
+  checkNotificationPermission,
+  requestNotificationPermission,
+  ensureNotificationPermission,
+} from '@/lib/tauri/notifications';
+
+// Check if permission is granted
+const hasPermission = await checkNotificationPermission();
+
+// Request permission from the user
+const granted = await requestNotificationPermission();
+
+// Check and request if needed (recommended)
+const ready = await ensureNotificationPermission();
+```
+
+### Channel Management
+
+```typescript
+import {
+  initializeNotificationChannels,
+  getNotificationChannels,
+  deleteNotificationChannel,
+} from '@/lib/tauri/notifications';
+
+// Initialize all channels (called automatically on app startup)
+await initializeNotificationChannels();
+
+// List existing channels
+const channels = await getNotificationChannels();
+
+// Remove a channel
+await deleteNotificationChannel('activity');
+```
+
+### Adding New Channels
+
+To add a new notification channel:
+
+1. **Add the channel type** in `src/lib/tauri/settings/types.ts`:
+
+   ```typescript
+   export type NotificationChannel =
+     | 'general'
+     | 'reminders'
+     | 'updates'
+     | 'alerts'
+     | 'activity'
+     | 'my-channel'; // Add your channel
+   ```
+
+2. **Add the channel definition** in `src/lib/tauri/notifications/channels.ts`:
+
+   ```typescript
+   {
+     id: 'my-channel',
+     name: 'My Channel',
+     description: 'Description of your channel',
+     importance: Importance.Default,
+     visibility: Visibility.Public,
+   },
+   ```
+
+3. **Add the settings constant** in `src/constants/settings.ts`:
+
+   ```typescript
+   {
+     id: 'my-channel',
+     name: 'My Channel',
+     description: 'Description of your channel',
+     settingKey: 'notifyMyChannel',
+     defaultEnabled: true,
+   },
+   ```
+
+4. **Create a database migration** to add the setting column:
+
+   ```bash
+   cd src-tauri
+   diesel migration generate add_my_channel_notification
+   ```
+
+5. **Update all settings types** (TypeScript and Rust) to include the new field.
+
+### Removing Notifications
+
+If you don't need notification functionality:
+
+1. **Remove the plugin** from `src-tauri/src/lib.rs`:
+
+   ```diff
+   - .plugin(tauri_plugin_notification::init())
+   ```
+
+2. **Remove the dependency** from `src-tauri/Cargo.toml`:
+
+   ```diff
+   - tauri-plugin-notification = "2"
+   ```
+
+3. **Remove the permissions** from `src-tauri/capabilities/default.json`:
+
+   ```diff
+   - "notification:default"
+   ```
+
+4. **Remove the JavaScript package**:
+
+   ```bash
+   pnpm remove @tauri-apps/plugin-notification
+   ```
+
+5. **Delete the notifications module**: Remove `src/lib/tauri/notifications/`
+
+6. **Remove notification settings** from the database migration, Rust models, TypeScript types, and Settings page.
+
+For more details, see the [Tauri Notification documentation](https://tauri.app/plugin/notification/).
 
 ## Window State
 
