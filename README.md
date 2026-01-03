@@ -16,8 +16,12 @@ pnpm install -g turbo
 
 - `turbo run build`: Build all projects in the workspace.
 - `turbo run check`: Check all projects in the workspace.
+- `turbo run dev`: Start a development server for all projects in the workspace.
 - `turbo run format`: Format all projects in the workspace.
 - `turbo run lint`: Lint all projects in the workspace.
+- `turbo run tauri -- *`: Use tauri commands for all projects in the workspace.
 - `turbo run test`: Run tests for all projects in the workspace.
 - `turbo run test:coverage`: Run tests with coverage for all projects in the workspace.
+- `turbo run test:ui`: Run tests with UI for all projects in the workspace.
 - `turbo run test:watch`: Run tests in watch mode for all projects in the workspace.
+- `turbo run validate`: Validate all projects in the workspace.
