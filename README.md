@@ -9,6 +9,7 @@ A starter kit for building local-first applications for mobile and desktop.
 - **Lightweight** — Native performance with a small bundle size
 - **Secure** — Built-in Content Security Policy and Tauri's security model
 - **System Tray** — Built-in system tray with show/hide and quit actions
+- **Window State** — Remembers window size and position across app restarts
 - **Logging** — Configurable logging to console, webview, and log files
 - **SQLite Database** — Diesel ORM with migrations and Tauri commands
 - **Modern stack** — React, TypeScript, Vite, Tauri, and Turborepo
@@ -175,6 +176,85 @@ If you don't need logging functionality, you can remove it:
    ```
 
 For more details on logging customization, see the [Tauri Logging documentation](https://tauri.app/plugin/logging/).
+
+## Window State
+
+This starter kit includes window state persistence, which automatically saves and restores window size and position across app restarts — providing a polished desktop experience.
+
+### What's Included
+
+The window-state plugin is initialized in `src-tauri/src/lib.rs` and provides:
+
+- **Automatic persistence** — Window size and position saved on close
+- **Automatic restoration** — Previous window state restored on next launch
+- **Per-window settings** — Each window's state is tracked independently
+
+### Usage from JavaScript
+
+You can manually save or restore window state if needed:
+
+```typescript
+import {
+  saveWindowState,
+  restoreStateCurrent,
+  StateFlags,
+} from '@tauri-apps/plugin-window-state';
+
+// Save window state manually
+saveWindowState(StateFlags.ALL);
+
+// Restore window state manually
+restoreStateCurrent(StateFlags.ALL);
+```
+
+### Usage from Rust
+
+```rust
+use tauri_plugin_window_state::{AppHandleExt, StateFlags};
+
+// Save state of all open windows
+app.save_window_state(StateFlags::all());
+```
+
+```rust
+use tauri_plugin_window_state::{WindowExt, StateFlags};
+
+// Restore a specific window's state
+window.restore_state(StateFlags::all());
+```
+
+### Removing Window State
+
+If you don't need window state persistence, you can remove it:
+
+1. **Remove the plugin initialization** from `src-tauri/src/lib.rs`:
+
+   ```diff
+   - // Initialize window state plugin
+   - #[cfg(desktop)]
+   - app.handle()
+   -     .plugin(tauri_plugin_window_state::Builder::default().build())?;
+   ```
+
+2. **Remove the dependency** from `src-tauri/Cargo.toml`:
+
+   ```diff
+   - tauri-plugin-window-state = "2"
+   ```
+
+3. **Remove the permission** from `src-tauri/capabilities/default.json`:
+
+   ```diff
+   - "window-state:default"
+   ```
+
+4. **Remove the JavaScript package** (if installed):
+
+   ```bash
+   pnpm remove @tauri-apps/plugin-window-state
+   ```
+
+For more details on window state customization, see the [Tauri Window State documentation](https://tauri.app/plugin/window-state/).
 
 ## SQLite Database
 

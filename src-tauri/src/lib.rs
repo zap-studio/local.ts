@@ -12,6 +12,11 @@ pub fn run() {
         .setup(|app| {
             logging::init(app);
 
+            // Initialize window state plugin
+            #[cfg(desktop)]
+            app.handle()
+                .plugin(tauri_plugin_window_state::Builder::default().build())?;
+
             // Initialize database and manage the connection pool
             let pool = database::init(app.handle())?;
             app.manage(pool);
