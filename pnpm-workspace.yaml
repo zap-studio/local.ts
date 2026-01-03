@@ -1,6 +1,7 @@
 packages:
-  - "."
-  - "./src-tauri"
+  - .
+  - ./src-tauri
 
 onlyBuiltDependencies:
   - esbuild
+  - lefthook
