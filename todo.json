@@ -15,11 +15,6 @@
     "completed": false
   },
   {
-    "id": 8,
-    "task": "create public template repository on zap studio",
-    "completed": false
-  },
-  {
     "id": 9,
     "task": "add tailwind to tauri app",
     "completed": false
@@ -27,6 +22,16 @@
   {
     "id": 10,
     "task": "add shadcn/ui components with base ui",
+    "completed": false
+  },
+  {
+    "id": 11,
+    "task": "write docs",
+    "completed": false
+  },
+  {
+    "id": 12,
+    "task": "add github actions",
     "completed": false
   }
 ]
