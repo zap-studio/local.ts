@@ -8,6 +8,7 @@ A starter kit for building local-first applications for mobile and desktop.
 - **Cross-platform** — Build for macOS, Windows, Linux, iOS, and Android
 - **Lightweight** — Native performance with a small bundle size
 - **Secure** — Built-in Content Security Policy and Tauri's security model
+- **System Tray** — Built-in system tray with show/hide and quit actions
 - **Modern stack** — React, TypeScript, Vite, Tauri, and Turborepo
 
 ## Getting Started
@@ -23,6 +24,54 @@ A starter kit for building local-first applications for mobile and desktop.
 ```bash
 pnpm install
 ```
+
+## Extending Your App
+
+For additional functionality like notifications, clipboard access, file dialogs, global shortcuts, and more, check out the official [Tauri Plugins](https://tauri.app/plugin/).
+
+For comprehensive documentation on building with Tauri, visit the [Tauri Documentation](https://tauri.app/learn/).
+
+## System Tray
+
+This starter kit comes with a system tray pre-configured, allowing your app to run in the background — a common requirement for most desktop applications.
+
+### What's Included
+
+The system tray is implemented in `src-tauri/src/system_tray.rs` and provides:
+
+- **App icon** in the system tray using your app's default icon
+- **Right-click menu** with:
+  - **Show** — Brings the main window to focus
+  - **Hide** — Hides the main window
+  - **Quit** — Exits the application
+- **Left-click behavior** — Clicking the tray icon shows and focuses the main window
+
+### Removing the System Tray
+
+If you don't need system tray functionality, you can remove it:
+
+1. **Delete the system tray module**: Remove `src-tauri/src/system_tray.rs`
+
+2. **Remove the tray-icon feature** from `src-tauri/Cargo.toml`:
+
+   ```diff
+   - tauri = { version = "2", features = ["tray-icon"] }
+   + tauri = { version = "2", features = [] }
+   ```
+
+3. **Remove the module and setup call** from `src-tauri/src/lib.rs`:
+
+   ```rust
+   #[cfg_attr(mobile, tauri::mobile_entry_point)]
+   pub fn run() {
+       tauri::Builder::default()
+           .plugin(tauri_plugin_opener::init())
+           .run(tauri::generate_context!())
+           .expect("error while running tauri application");
+   }
+   ```
+
+For more details on system tray customization, see the [Tauri System Tray documentation](https://tauri.app/learn/system-tray/).
 
 ## Turborepo
 
