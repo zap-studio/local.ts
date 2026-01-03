@@ -23,18 +23,21 @@ A starter kit for building local-first applications for mobile and desktop.
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18+)
-- [pnpm](https://pnpm.io/)
 - [Rust](https://www.rust-lang.org/tools/install)
 - [Diesel CLI](https://diesel.rs/guides/getting-started) (for database migrations)
-
-  ```bash
-  cargo install diesel_cli --no-default-features --features sqlite
-  ```
 
 ### Installation
 
 ```bash
-pnpm install
+npm install
+# or
+pnpm install # recommended
+```
+
+Optionally, install Diesel CLI for database migrations:
+
+```bash
+cargo install diesel_cli
 ```
 
 ## Customizing Your App
