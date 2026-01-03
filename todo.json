@@ -15,11 +15,6 @@
     "completed": false
   },
   {
-    "id": 10,
-    "task": "add shadcn/ui components with base ui",
-    "completed": false
-  },
-  {
     "id": 11,
     "task": "write docs",
     "completed": false
