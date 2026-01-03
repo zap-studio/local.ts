@@ -30,7 +30,6 @@ pub fn run() {
             let pool = database::init(app.handle())?;
             app.manage(pool.clone());
 
-            plugins::window::setup(app)?;
             plugins::system_tray::setup(app, &pool)?;
 
             Ok(())
