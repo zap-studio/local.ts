@@ -1,8 +1,6 @@
 mod commands;
 mod database;
-mod logging;
-mod system_tray;
-mod window;
+mod plugins;
 
 use tauri::Manager;
 #[cfg(desktop)]
@@ -12,9 +10,9 @@ use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .plugin(logging::build().build())
+        .plugin(plugins::logging::build().build())
         .setup(|app| {
-            logging::init(app);
+            plugins::logging::init(app);
 
             // Initialize window state plugin
             #[cfg(desktop)]
@@ -32,8 +30,8 @@ pub fn run() {
             let pool = database::init(app.handle())?;
             app.manage(pool.clone());
 
-            window::setup(app)?;
-            system_tray::setup(app, &pool)?;
+            plugins::window::setup(app)?;
+            plugins::system_tray::setup(app, &pool)?;
 
             Ok(())
         })
