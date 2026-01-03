@@ -58,14 +58,14 @@ This app uses a Content Security Policy to mitigate XSS and other web-based vuln
 
 Current policy:
 
-| Directive     | Value                                                  |
-| ------------- | ------------------------------------------------------ |
-| `default-src` | `'self' customprotocol: asset:`                        |
-| `connect-src` | `ipc: http://ipc.localhost`                            |
-| `font-src`    | `'self' https://fonts.gstatic.com`                     |
-| `img-src`     | `'self' asset: http://asset.localhost blob: data:`     |
-| `style-src`   | `'unsafe-inline' 'self' https://fonts.googleapis.com`  |
-| `script-src`  | `'self'`                                               |
+| Directive     | Value                                                 |
+| ------------- | ----------------------------------------------------- |
+| `default-src` | `'self' customprotocol: asset:`                       |
+| `connect-src` | `ipc: http://ipc.localhost`                           |
+| `font-src`    | `'self' https://fonts.gstatic.com`                    |
+| `img-src`     | `'self' asset: http://asset.localhost blob: data:`    |
+| `style-src`   | `'unsafe-inline' 'self' https://fonts.googleapis.com` |
+| `script-src`  | `'self'`                                              |
 
 **Notes:**
 
