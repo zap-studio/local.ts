@@ -9,6 +9,7 @@ A starter kit for building local-first applications for mobile and desktop.
 - **Lightweight** — Native performance with a small bundle size
 - **Secure** — Built-in Content Security Policy and Tauri's security model
 - **System Tray** — Built-in system tray with show/hide and quit actions
+- **Logging** — Configurable logging to console, webview, and log files
 - **Modern stack** — React, TypeScript, Vite, Tauri, and Turborepo
 
 ## Getting Started
@@ -72,6 +73,87 @@ If you don't need system tray functionality, you can remove it:
    ```
 
 For more details on system tray customization, see the [Tauri System Tray documentation](https://tauri.app/learn/system-tray/).
+
+## Logging
+
+This starter kit includes built-in logging capabilities, essential for debugging and monitoring your application.
+
+### What's Included
+
+The logging module is implemented in `src-tauri/src/logging.rs` and provides:
+
+- **Console output** — Logs printed to stdout for development
+- **Webview console** — Rust logs forwarded to the browser devtools
+- **Persistent log files** — Logs saved to the app's log directory with automatic rotation
+
+Log files are stored in the platform-specific log directory:
+
+| Platform | Location                                                |
+| -------- | ------------------------------------------------------- |
+| Linux    | `~/.local/share/{bundleIdentifier}/logs`                |
+| macOS    | `~/Library/Logs/{bundleIdentifier}`                     |
+| Windows  | `C:\Users\{User}\AppData\Local\{bundleIdentifier}\logs` |
+
+### Usage from JavaScript
+
+```typescript
+import { trace, debug, info, warn, error, attachConsole } from '@tauri-apps/plugin-log';
+
+// Attach console to see Rust logs in browser devtools
+const detach = await attachConsole();
+
+// Log from JavaScript
+info('User logged in');
+warn('Connection slow');
+error('Failed to save data');
+```
+
+### Usage from Rust
+
+```rust
+log::info!("Application started");
+log::debug!("Processing {} items", count);
+log::error!("Failed to connect: {}", err);
+```
+
+### Removing Logging
+
+If you don't need logging functionality, you can remove it:
+
+1. **Delete the logging module**: Remove `src-tauri/src/logging.rs`
+
+2. **Remove the dependency** from `src-tauri/Cargo.toml`:
+
+   ```diff
+   - tauri-plugin-log = "2"
+   - log = "0.4"
+   ```
+
+3. **Remove the plugin and module** from `src-tauri/src/lib.rs`:
+
+   ```diff
+   - mod logging;
+
+     .plugin(tauri_plugin_opener::init())
+   - .plugin(logging::build().build())
+     .setup(|app| {
+   -     logging::init(app);
+         system_tray::setup(app)?;
+   ```
+
+4. **Remove the permission** from `src-tauri/capabilities/default.json`:
+
+   ```diff
+   - "log:default"
+   ```
+
+5. **Remove the JavaScript package**:
+
+   ```bash
+   pnpm remove @tauri-apps/plugin-log
+   ```
+
+For more details on logging customization, see the [Tauri Logging documentation](https://tauri.app/plugin/logging/).
 
 ## Turborepo
 
