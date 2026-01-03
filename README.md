@@ -14,7 +14,7 @@ A starter kit for building local-first applications for mobile and desktop.
 - **Autostart** — Launch at login with user-configurable settings
 - **Window State** — Remembers window size and position across app restarts
 - **Logging** — Configurable logging to console, webview, and log files
-- **Notifications** — Native notifications with customizable channels and permissions
+- **Notifications** — Native notifications and permissions management
 - **SQLite Database** — Diesel ORM with migrations and Tauri commands
 - **Modern stack** — React, TypeScript, Vite, Tauri, and Turborepo
 
@@ -321,26 +321,15 @@ For more details on logging customization, see the [Tauri Logging documentation]
 
 ## Notifications
 
-This starter kit includes native notification support, allowing your app to send system notifications to users with configurable channels and user preferences.
+This starter kit includes native notification support, allowing your app to send system notifications according to user preferences.
 
 ### What's Included
 
 The notification system uses the [Tauri Notification Plugin](https://tauri.app/plugin/notification/) and provides:
 
 - **Native notifications** — System-level notifications on all platforms
-- **Notification channels** — Organized categories with different priority levels
-- **User preferences** — Per-channel toggle controls in Settings
+- **User preferences** — Toggle controls in Settings
 - **Permission handling** — Automatic permission requests and status checking
-
-### Default Channels
-
-| Channel       | Description                                  | Importance | Default |
-| ------------- | -------------------------------------------- | ---------- | ------- |
-| **General**   | App announcements, tips, and feature updates | Default    | On      |
-| **Reminders** | Time-sensitive reminders and scheduled tasks | High       | On      |
-| **Updates**   | App updates and version announcements        | Low        | On      |
-| **Alerts**    | Critical system alerts and security warnings | High       | On      |
-| **Activity**  | Background task progress and sync status     | Min        | Off     |
 
 ### Usage from JavaScript
 
@@ -355,15 +344,7 @@ const settings = useSettings.getState().settings;
 await notify({
   title: 'Task Complete',
   body: 'Your export has finished',
-  channel: 'activity',
 }, settings);
-
-// Send a critical notification (bypasses channel settings)
-await notifyForced({
-  title: 'Security Alert',
-  body: 'Unusual activity detected',
-  channel: 'alerts',
-});
 ```
 
 ### Permission Handling
@@ -384,74 +365,6 @@ const granted = await requestNotificationPermission();
 // Check and request if needed (recommended)
 const ready = await ensureNotificationPermission();
 ```
-
-### Channel Management
-
-```typescript
-import {
-  initializeNotificationChannels,
-  getNotificationChannels,
-  deleteNotificationChannel,
-} from '@/lib/tauri/notifications';
-
-// Initialize all channels (called automatically on app startup)
-await initializeNotificationChannels();
-
-// List existing channels
-const channels = await getNotificationChannels();
-
-// Remove a channel
-await deleteNotificationChannel('activity');
-```
-
-### Adding New Channels
-
-To add a new notification channel:
-
-1. **Add the channel type** in `src/lib/tauri/settings/types.ts`:
-
-   ```typescript
-   export type NotificationChannel =
-     | 'general'
-     | 'reminders'
-     | 'updates'
-     | 'alerts'
-     | 'activity'
-     | 'my-channel'; // Add your channel
-   ```
-
-2. **Add the channel definition** in `src/lib/tauri/notifications/channels.ts`:
-
-   ```typescript
-   {
-     id: 'my-channel',
-     name: 'My Channel',
-     description: 'Description of your channel',
-     importance: Importance.Default,
-     visibility: Visibility.Public,
-   },
-   ```
-
-3. **Add the settings constant** in `src/constants/settings.ts`:
-
-   ```typescript
-   {
-     id: 'my-channel',
-     name: 'My Channel',
-     description: 'Description of your channel',
-     settingKey: 'notifyMyChannel',
-     defaultEnabled: true,
-   },
-   ```
-
-4. **Create a database migration** to add the setting column:
-
-   ```bash
-   cd src-tauri
-   diesel migration generate add_my_channel_notification
-   ```
-
-5. **Update all settings types** (TypeScript and Rust) to include the new field.
 
 ### Removing Notifications
 

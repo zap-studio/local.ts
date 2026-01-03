@@ -41,7 +41,6 @@ pub fn run() {
             commands::settings::set_tray_visible,
             commands::window::close_splashscreen,
             commands::notifications::are_notifications_enabled,
-            commands::notifications::get_notification_channels,
         ])
         .on_window_event(|window, event| {
             #[cfg(desktop)]

@@ -6,11 +6,7 @@ import { SettingRow } from "@/components/setting-row";
 import { SettingsSection } from "@/components/settings-section";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import {
-  LOG_LEVEL_OPTIONS,
-  NOTIFICATION_CHANNELS,
-  THEME_OPTIONS,
-} from "@/constants/settings";
+import { LOG_LEVEL_OPTIONS, THEME_OPTIONS } from "@/constants/settings";
 import { useHandleSettings } from "@/hooks/use-handle-settings";
 
 export const Route = createFileRoute("/settings")({
@@ -138,24 +134,6 @@ function SettingsPage() {
             disabled={isSaving}
           />
         </SettingRow>
-
-        {NOTIFICATION_CHANNELS.map((channel) => (
-          <SettingRow
-            key={channel.id}
-            label={channel.name}
-            description={channel.description}
-            htmlFor={`notify-${channel.id}`}
-          >
-            <Switch
-              id={`notify-${channel.id}`}
-              checked={settings[channel.settingKey]}
-              onCheckedChange={(checked) =>
-                handleUpdateSetting(channel.settingKey, checked)
-              }
-              disabled={isSaving || !settings.enableNotifications}
-            />
-          </SettingRow>
-        ))}
       </SettingsSection>
 
       {/* Developer Section */}
