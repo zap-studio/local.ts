@@ -1,0 +1,82 @@
+import { useEffect, useState } from "react";
+
+import { useSettings } from "@/stores/settings";
+import { useTheme } from "@/stores/theme";
+
+interface StoreInitializerProps {
+  children: React.ReactNode;
+}
+
+export function StoreInitializer({ children }: StoreInitializerProps) {
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const initializeSettings = useSettings((state) => state.initialize);
+  const initializeTheme = useTheme((state) => state.initialize);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await initializeSettings();
+        initializeTheme();
+        setIsInitialized(true);
+      } catch (err) {
+        console.error("Failed to initialize stores:", err);
+        setError(err instanceof Error ? err : new Error("Unknown error"));
+      }
+    };
+
+    init();
+  }, [initializeSettings, initializeTheme]);
+
+  const handleRetry = () => {
+    setError(null);
+    setIsInitialized(false);
+    initializeSettings()
+      .then(() => {
+        initializeTheme();
+        setIsInitialized(true);
+      })
+      .catch((err) => {
+        console.error("Retry failed:", err);
+        setError(err instanceof Error ? err : new Error("Unknown error"));
+      });
+  };
+
+  if (error) {
+    return <InitializationError error={error} onRetry={handleRetry} />;
+  }
+
+  if (!isInitialized) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
+interface InitializationErrorProps {
+  error: Error;
+  onRetry: () => void;
+}
+
+function InitializationError({ error, onRetry }: InitializationErrorProps) {
+  return (
+    <div className="flex h-screen flex-col items-center justify-center gap-4 p-6">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-destructive">
+          Initialization Error
+        </h1>
+        <p className="mt-2 text-muted-foreground">
+          Failed to load application settings
+        </p>
+        <p className="mt-1 text-sm text-muted-foreground">{error.message}</p>
+      </div>
+      <button
+        type="button"
+        onClick={onRetry}
+        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+      >
+        Retry
+      </button>
+    </div>
+  );
+}
