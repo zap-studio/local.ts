@@ -3,6 +3,8 @@ mod logging;
 mod system_tray;
 
 use tauri::Manager;
+#[cfg(desktop)]
+use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -24,11 +26,12 @@ pub fn run() {
             system_tray::setup(app)?;
             Ok(())
         })
-        // Register your model commands here as you create them:
-        // .invoke_handler(tauri::generate_handler![
-        //     database::models::user::get_user,
-        //     database::models::user::create_user,
-        // ])
+        .on_window_event(|window, event| {
+            #[cfg(desktop)]
+            if let tauri::WindowEvent::CloseRequested { .. } = event {
+                let _ = window.app_handle().save_window_state(StateFlags::all());
+            }
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

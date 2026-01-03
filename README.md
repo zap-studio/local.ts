@@ -227,13 +227,27 @@ window.restore_state(StateFlags::all());
 
 If you don't need window state persistence, you can remove it:
 
-1. **Remove the plugin initialization** from `src-tauri/src/lib.rs`:
+1. **Remove the import and plugin initialization** from `src-tauri/src/lib.rs`:
+
+   ```diff
+   - #[cfg(desktop)]
+   - use tauri_plugin_window_state::{AppHandleExt, StateFlags};
+   ```
 
    ```diff
    - // Initialize window state plugin
    - #[cfg(desktop)]
    - app.handle()
    -     .plugin(tauri_plugin_window_state::Builder::default().build())?;
+   ```
+
+   ```diff
+   - .on_window_event(|window, event| {
+   -     #[cfg(desktop)]
+   -     if let tauri::WindowEvent::CloseRequested { .. } = event {
+   -         let _ = window.app_handle().save_window_state(StateFlags::all());
+   -     }
+   - })
    ```
 
 2. **Remove the dependency** from `src-tauri/Cargo.toml`:
