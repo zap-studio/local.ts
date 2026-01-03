@@ -5,10 +5,14 @@ import {
 } from "@tauri-apps/plugin-autostart";
 import { useCallback, useEffect, useState } from "react";
 
-import type { Settings, Theme } from "@/lib/settings/types";
+import type { Settings, Theme } from "@/lib/tauri/settings/types";
 
 import { useAsyncAction } from "@/hooks/use-async-action";
-import { getSettings, setTrayVisible, updateSettings } from "@/lib/settings";
+import {
+  getSettings,
+  setTrayVisible,
+  updateSettings,
+} from "@/lib/tauri/settings";
 import { useTheme } from "@/stores/theme";
 
 export function useHandleSettings() {

@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-import type { Settings } from "@/lib/settings/types";
+import type { Settings } from "@/lib/tauri/settings/types";
 
 import {
   getSettings,
   updateSettings as updateSettingsCommand,
-} from "@/lib/settings";
+} from "@/lib/tauri/settings";
 
 interface SettingsStore {
   settings: Settings | null;

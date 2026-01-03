@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import type { LogLevel } from "@/lib/settings/types";
+import type { LogLevel } from "@/lib/tauri/settings/types";
 
 import { Label } from "@/components/label";
 import { Select } from "@/components/select";
