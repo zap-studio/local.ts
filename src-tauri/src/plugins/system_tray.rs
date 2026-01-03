@@ -68,11 +68,9 @@ pub fn setup(app: &App, pool: &DbPool) -> Result<(), Box<dyn std::error::Error>>
 
 /// Apply tray visibility based on current settings
 fn apply_settings_visibility(tray: &TrayIcon, pool: &DbPool) {
-    if let Ok(mut conn) = pool.get() {
-        if let Ok(settings) = get_settings(&mut conn) {
-            if !settings.show_in_tray {
+    if let Ok(mut conn) = pool.get()
+        && let Ok(settings) = get_settings(&mut conn)
+            && !settings.show_in_tray {
                 let _ = tray.set_visible(false);
             }
-        }
-    }
 }
