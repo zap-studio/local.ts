@@ -27,6 +27,7 @@ function SettingsPage() {
     handleUpdateSetting,
     handleAutostartChange,
     handleTrayVisibilityChange,
+    handleNotificationChange,
   } = useHandleSettings();
 
   if (isLoading) {
@@ -133,9 +134,7 @@ function SettingsPage() {
           <Switch
             id="enable-notifications"
             checked={settings.enableNotifications}
-            onCheckedChange={(checked) =>
-              handleUpdateSetting("enableNotifications", checked)
-            }
+            onCheckedChange={handleNotificationChange}
             disabled={isSaving}
           />
         </SettingRow>

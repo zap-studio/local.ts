@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { Settings, Theme } from "@/lib/tauri/settings/types";
 
 import { useAsyncAction } from "@/hooks/use-async-action";
+import { requestNotificationPermission } from "@/lib/tauri/notifications/permissions";
 import {
   getSettings,
   setTrayVisible,
@@ -117,6 +118,41 @@ export function useHandleSettings() {
     [settings, withSaving]
   );
 
+  const handleNotificationChange = useCallback(
+    async (enabled: boolean) => {
+      if (!settings) return;
+
+      const previousSettings = settings;
+
+      // If enabling notifications, request permission first
+      if (enabled) {
+        const granted = await requestNotificationPermission();
+        if (!granted) {
+          // Permission denied, don't enable notifications
+          return;
+        }
+      }
+
+      setSettings((prev) =>
+        prev ? { ...prev, enableNotifications: enabled } : null
+      );
+
+      await withSaving(
+        async () => {
+          await updateSettings({ enableNotifications: enabled });
+        },
+        {
+          onError: () => setSettings(previousSettings),
+          errorMessage: "Failed to update notification settings",
+          successMessage: enabled
+            ? "Notifications enabled"
+            : "Notifications disabled",
+        }
+      );
+    },
+    [settings, withSaving]
+  );
+
   return {
     theme,
     settings,
@@ -126,5 +162,6 @@ export function useHandleSettings() {
     handleUpdateSetting,
     handleAutostartChange,
     handleTrayVisibilityChange,
+    handleNotificationChange,
   };
 }
