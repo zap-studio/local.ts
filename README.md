@@ -1,7 +1,23 @@
-# Tauri + React + Typescript
+# Local.ts
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+## Turborepo
 
-## Recommended IDE Setup
+Use `turbo` commands to execute tasks across all projects in the workspace.
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+You need to install `turbo` globally using the following command:
+
+```bash
+npm install -g turbo
+# or 
+pnpm install -g turbo
+```
+
+### Available Commands
+
+- `turbo run build`: Build all projects in the workspace.
+- `turbo run check`: Check all projects in the workspace.
+- `turbo run format`: Format all projects in the workspace.
+- `turbo run lint`: Lint all projects in the workspace.
+- `turbo run test`: Run tests for all projects in the workspace.
+- `turbo run test:coverage`: Run tests with coverage for all projects in the workspace.
+- `turbo run test:watch`: Run tests in watch mode for all projects in the workspace.
