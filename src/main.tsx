@@ -1,4 +1,5 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { attachConsole } from "@tauri-apps/plugin-log";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "sonner";
@@ -7,6 +8,9 @@ import { StoreInitializer } from "@/components/store-initializer";
 
 import { routeTree } from "./routeTree.gen";
 import "./styles/globals.css";
+
+// Attach console to forward Rust logs to browser devtools
+attachConsole();
 
 const router = createRouter({ routeTree });
 
