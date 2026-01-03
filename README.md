@@ -49,6 +49,37 @@ After cloning this starter kit, update the following files to match your project
 | `src/constants/index.ts`    | `APP_TITLE`                                 |
 | `src-tauri/Cargo.toml`      | `name`, `version`, `description`, `authors` |
 | `src-tauri/tauri.conf.json` | `productName`, `version`, `identifier`      |
+| `splash.html`               | `title` (app name), `description` text      |
+
+### Windows Configuration
+
+The app's window configuration is defined in `src-tauri/tauri.conf.json` under `app.windows`. This starter includes two windows:
+
+**Main Window:**
+```json
+{
+  "title": "Local.ts",
+  "label": "main",
+  "visible": false,    // Hidden on startup (splash screen shows first)
+  "width": 1280,
+  "height": 720
+}
+```
+
+**Splash Screen Window:**
+```json
+{
+  "title": "Loading...",
+  "label": "splashscreen",
+  "url": "splash.html",
+  "width": 1280,
+  "height": 720
+}
+```
+
+The splash screen displays while the app initializes, then automatically closes to reveal the main window. See the [Splash Screen](#splash-screen) section for details.
+
+You can customize window properties like size, position, decorations, and more. See the [Tauri Window Configuration documentation](https://tauri.app/reference/config/#windowconfig) for all available options.
 
 ### Sidebar Navigation
 
@@ -384,78 +415,106 @@ This starter kit includes a splash screen that displays while your app initializ
 
 ### What's Included
 
-The splash screen is configured in `src-tauri/tauri.conf.json` and provides:
+The splash screen is configured in `src-tauri/tauri.conf.json` and `splash.html`:
 
-- **Minimal design** — Clean, theme-aware splash screen matching your app's aesthetic
-- **Automatic display** — Shows immediately on app launch
-- **Hidden main window** — Main window stays hidden until stores are initialized
-- **Seamless transition** — Automatically closes splash and shows main window when ready
-- **Error handling** — Closes splash even if initialization fails, showing error UI
+- **Full-screen design** — Clean, minimalist splash screen matching your app's theme
+- **Automatic display** — Shows immediately on app launch while main window stays hidden
+- **Theme-aware** — Automatically adapts to system light/dark mode preferences
+- **Seamless transition** — Closes splash and reveals main window when initialization completes
+- **Error handling** — Closes splash even on initialization errors to show error UI
 
 ### How It Works
 
-The splash screen uses Tauri's multi-window feature:
+The splash screen uses Tauri's multi-window feature defined in `src-tauri/tauri.conf.json`:
 
-1. Defined in `tauri.conf.json`:
-   - `splashscreen` — Visible on launch
+1. **Two windows configured**:
+   - `splashscreen` — Full-screen window (1280×720) displaying `splash.html`, visible on launch
+   - `main` — Your app window (1280×720), hidden until ready (`visible: false`)
 
-2. **Splash HTML** at `splash.html` — Minimalist design with app title and description
+2. **Splash screen** (`splash.html`) — Minimalist HTML with app title and description, styled to match your theme
 
 3. **Initialization flow**:
-   - App starts, splash screen shows
-   - Main window hidden
-   - Store initializer loads settings and theme
-   - Once ready, calls `close_splashscreen` command
-   - Splash closes, main window shows and focuses
+   ```
+   App Launch → Splash shows, Main hidden
+                    ↓
+   Store Initializer loads settings/theme
+                    ↓
+   Calls close_splashscreen command (src-tauri/src/commands/window.rs)
+                    ↓
+   Splash closes → Main window shows and focuses
+   ```
+
+4. **Error handling** — If initialization fails, splash still closes to display the error screen
 
 ### Customizing the Splash Screen
 
-Edit `splash.html` to customize the appearance:
+**Change appearance** — Edit `splash.html`:
 
 ```html
-<div class="container">
-   <h1 class="text-2xl font-bold text-foreground">Your App Name</h1>
-   <p class="mt-2 text-muted-foreground">Your App Description</p>
+<div class="splash-container">
+  <h1>Your app name</h1>
+  <p>Your app description</p>
 </div>
 ```
 
-The splash screen uses your app's theme colors (defined in `src/styles/globals.css`) and automatically adapts to light/dark mode.
+The splash uses CSS custom properties from your theme (`src/styles/globals.css`) with automatic light/dark mode support.
+
+**Change window size** — Edit `src-tauri/tauri.conf.json`:
+
+```json
+{
+  "label": "splashscreen",
+  "url": "splash.html",
+  "width": 800,     // Adjust as needed
+  "height": 600,    // Adjust as needed
+  "center": true
+}
+```
+
+**Add animations or logo** — Modify the `<style>` section in `splash.html` to add:
+- Loading spinners
+- Fade-in animations
+- Your app logo/icon
+- Progress indicators
 
 ### Removing the Splash Screen
 
 If you don't want a splash screen:
 
-1. **Update `tauri.conf.json`** to show the main window immediately:
+1. **Update `tauri.conf.json`** — Remove splash window and make main visible:
 
    ```diff
      "windows": [
+       {
+         "title": "Local.ts",
+         "label": "main",
+   -     "visible": false,
+   +     "visible": true,
+         "width": 1280,
+         "height": 720
+       },
    -   {
    -     "title": "Loading...",
    -     "label": "splashscreen",
-   -     "width": 400,
-   -     "height": 300,
-   -     "center": true,
-   -     "decorations": false,
-   -     "transparent": true,
-   -     "alwaysOnTop": true,
-   -     "resizable": false,
-   -     "url": "splash.html"
+   -     "url": "splash.html",
+   -     "width": 1280,
+   -     "height": 720
    -   }
      ]
    ```
 
-2. **Delete the splash screen file**: Remove `splash.html`
+2. **Delete splash file**: Remove `splash.html`
 
-3. **Remove the window command**: Delete `src-tauri/src/commands/window.rs`
+3. **Remove window command**: Delete `src-tauri/src/commands/window.rs`
 
-4. **Update `src-tauri/src/commands/mod.rs`**:
+4. **Update commands module** — Edit `src-tauri/src/commands/mod.rs`:
 
    ```diff
    pub mod settings;
    - pub mod window;
    ```
 
-5. **Unregister the command** in `src-tauri/src/lib.rs`:
+5. **Unregister command** — Edit `src-tauri/src/lib.rs`:
 
    ```diff
    .invoke_handler(tauri::generate_handler![
@@ -466,7 +525,33 @@ If you don't want a splash screen:
    ])
    ```
 
-6. **Remove splash logic** from `src/components/store-initializer.tsx`:
+6. **Remove splash logic** — Edit `src/components/store-initializer.tsx`:
+
+   ```diff
+   - import { invoke } from "@tauri-apps/api/core";
+
+   useEffect(() => {
+     const init = async () => {
+       try {
+         await initializeSettings();
+         initializeTheme();
+         setIsInitialized(true);
+   -
+   -     // Close splash screen and show main window
+   -     await invoke("close_splashscreen");
+       } catch (err) {
+         console.error("Failed to initialize stores:", err);
+         setError(err instanceof Error ? err : new Error("Unknown error"));
+   -
+   -     // Still close splash screen on error to show error UI
+   -     await invoke("close_splashscreen").catch(console.error);
+       }
+     };
+   ```
+
+For more details on window configuration, see the [Tauri Window documentation](https://tauri.app/develop/window/).
+
+## App Settings
 
    ```diff
    - import { invoke } from "@tauri-apps/api/core";
