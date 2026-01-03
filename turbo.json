@@ -2,7 +2,8 @@
   "$schema": "https://turborepo.com/schema.json",
   "tasks": {
     "build": {
-      "outputs": ["dist/**"]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "src-tauri/target/release/**", "src-tauri/target/debug/**"]
     },
     "check": {
       "dependsOn": ["^check"]
@@ -14,24 +15,35 @@
     "format": {
       "cache": false
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "preview": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
     "tauri": {
       "cache": false
     },
     "test": {
-      "cache": false
+      "dependsOn": ["^build"]
     },
     "test:coverage": {
-      "cache": false
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
     },
     "test:ui": {
+      "dependsOn": ["^build"],
+      "persistent": true,
       "cache": false
     },
     "test:watch": {
+      "dependsOn": ["^build"],
+      "persistent": true,
       "cache": false
     },
     "validate": {
-      "cache": false
+      "dependsOn": ["build", "check", "lint", "test"]
     }
   }
 }
