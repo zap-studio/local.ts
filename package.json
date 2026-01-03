@@ -13,6 +13,7 @@
     "tauri": "tauri",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest run --ui",
     "test:watch": "vitest watch",
     "validate": "turbo run build check lint test"
   },
@@ -28,6 +29,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
     "oxlint": "^1.36.0",
     "turbo": "^2.7.2",
     "typescript": "^5.9.3",

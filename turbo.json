@@ -21,7 +21,13 @@
     "test:coverage": {
       "cache": false
     },
+    "test:ui": {
+      "cache": false
+    },
     "test:watch": {
+      "cache": false
+    },
+    "validate": {
       "cache": false
     }
   }
