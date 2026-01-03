@@ -1145,24 +1145,6 @@ The database file is stored in the platform-specific app data directory:
 | macOS    | `~/Library/Application Support/{bundleIdentifier}/`   |
 | Windows  | `C:\Users\{User}\AppData\Roaming\{bundleIdentifier}\` |
 
-### Project Structure
-
-```
-src-tauri/
-├── migrations/              # Diesel migrations (empty by default)
-│   └── .gitkeep
-├── src/database/
-│   ├── mod.rs               # Pool initialization, migration runner
-│   ├── error.rs             # Database error types
-│   ├── schema.rs            # Diesel schema (you write this)
-│   └── models/
-│       ├── mod.rs           # Model exports
-│       └── user/            # Example model structure
-│           ├── mod.rs       # User struct and module exports
-│           └── commands.rs  # Tauri commands for user operations
-└── diesel.toml              # Diesel CLI configuration
-```
-
 ### Creating Migrations
 
 Migrations are SQL files that define your database schema. Diesel CLI helps you generate migration folders automatically with proper timestamps.
