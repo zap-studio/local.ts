@@ -11,7 +11,10 @@
     "lint": "pnpm dlx ultracite check",
     "preview": "vite preview",
     "tauri": "tauri",
-    "validate": "turbo run build check format lint test"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch",
+    "validate": "turbo run build check lint test"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.9.1",
@@ -28,7 +31,8 @@
     "turbo": "^2.7.2",
     "typescript": "^5.9.3",
     "ultracite": "7.0.5",
-    "vite": "^7.3.0"
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16"
   },
   "packageManager": "pnpm@10.27.0+sha512.72d699da16b1179c14ba9e64dc71c9a40988cbdc65c264cb0e489db7de917f20dcf4d64d8723625f2969ba52d4b7e2a1170682d9ac2a5dcaeaab732b7e16f04a"
 }
