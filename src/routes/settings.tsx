@@ -120,40 +120,6 @@ function SettingsPage() {
         </SettingRow>
       </SettingsSection>
 
-      {/* Developer Section */}
-      <SettingsSection
-        title="Developer"
-        description="Advanced settings for debugging and development"
-      >
-        <SettingRow
-          label="Enable Logging"
-          description="Enable detailed application logging"
-          htmlFor="enable-logging"
-        >
-          <Switch
-            id="enable-logging"
-            checked={settings.enableLogging}
-            onCheckedChange={(checked) =>
-              handleUpdateSetting("enableLogging", checked)
-            }
-            disabled={isSaving}
-          />
-        </SettingRow>
-
-        <SettingRow
-          label="Log Level"
-          description="Set the minimum log level to record"
-        >
-          <Select<LogLevel>
-            value={settings.logLevel}
-            onValueChange={(value) => handleUpdateSetting("logLevel", value)}
-            options={LOG_LEVEL_OPTIONS}
-            disabled={isSaving || !settings.enableLogging}
-            className="w-full sm:w-40"
-          />
-        </SettingRow>
-      </SettingsSection>
-
       {/* Notifications Section */}
       <SettingsSection
         title="Notifications"
@@ -191,6 +157,40 @@ function SettingsPage() {
             />
           </SettingRow>
         ))}
+      </SettingsSection>
+
+      {/* Developer Section */}
+      <SettingsSection
+        title="Developer"
+        description="Advanced settings for debugging and development"
+      >
+        <SettingRow
+          label="Enable Logging"
+          description="Enable detailed application logging"
+          htmlFor="enable-logging"
+        >
+          <Switch
+            id="enable-logging"
+            checked={settings.enableLogging}
+            onCheckedChange={(checked) =>
+              handleUpdateSetting("enableLogging", checked)
+            }
+            disabled={isSaving}
+          />
+        </SettingRow>
+
+        <SettingRow
+          label="Log Level"
+          description="Set the minimum log level to record"
+        >
+          <Select<LogLevel>
+            value={settings.logLevel}
+            onValueChange={(value) => handleUpdateSetting("logLevel", value)}
+            options={LOG_LEVEL_OPTIONS}
+            disabled={isSaving || !settings.enableLogging}
+            className="w-full sm:w-40"
+          />
+        </SettingRow>
       </SettingsSection>
     </div>
   );
