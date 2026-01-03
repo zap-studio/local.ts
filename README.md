@@ -37,6 +37,8 @@ After cloning this starter kit, update the following files to match your project
 | File                        | Fields to Update                            |
 | --------------------------- | ------------------------------------------- |
 | `package.json`              | `name`, `version`, `description`            |
+| `index.html`                | `title`                                     |
+| `src/constants/index.ts`    | `APP_TITLE`                                 |
 | `src-tauri/Cargo.toml`      | `name`, `version`, `description`, `authors` |
 | `src-tauri/tauri.conf.json` | `productName`, `version`, `identifier`      |
 
