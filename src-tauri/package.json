@@ -5,6 +5,8 @@
   "scripts": {
     "build": "cargo build --release",
     "check": "cargo check",
+    "format": "cargo fmt",
+    "lint": "cargo clippy",
     "test": "cargo test",
     "test:coverage": "cargo tarpaulin",
     "test:watch": "cargo test --watch"

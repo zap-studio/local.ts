@@ -1,13 +1,14 @@
 {
   "name": "local-ts",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.27.0+sha512.72d699da16b1179c14ba9e64dc71c9a40988cbdc65c264cb0e489db7de917f20dcf4d64d8723625f2969ba52d4b7e2a1170682d9ac2a5dcaeaab732b7e16f04a",
   "scripts": {
     "build": "tsc && vite build",
     "check": "tsc --noEmit",
     "dev": "vite",
+    "format": "pnpm dlx ultracite fix",
+    "lint": "pnpm dlx ultracite check",
     "preview": "vite preview",
     "tauri": "tauri"
   },
@@ -22,8 +23,11 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
+    "oxlint": "^1.36.0",
     "turbo": "^2.7.2",
     "typescript": "^5.9.3",
+    "ultracite": "7.0.5",
     "vite": "^7.3.0"
-  }
+  },
+  "packageManager": "pnpm@10.27.0+sha512.72d699da16b1179c14ba9e64dc71c9a40988cbdc65c264cb0e489db7de917f20dcf4d64d8723625f2969ba52d4b7e2a1170682d9ac2a5dcaeaab732b7e16f04a"
 }
