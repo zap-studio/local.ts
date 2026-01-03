@@ -8,7 +8,7 @@ You need to install `turbo` globally using the following command:
 
 ```bash
 npm install -g turbo
-# or 
+# or
 pnpm install -g turbo
 ```
 
