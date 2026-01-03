@@ -15,7 +15,7 @@ function RootLayout() {
           data-tauri-drag-region
           className="h-14 shrink-0 border-b border-border"
         />
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto p-4 pt-6 md:p-6">
           <Outlet />
         </div>
       </main>

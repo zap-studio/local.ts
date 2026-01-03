@@ -12,9 +12,14 @@ export interface SidebarItem {
 interface SidebarNavItemProps {
   item: SidebarItem;
   expanded: boolean;
+  onClick?: () => void;
 }
 
-export function SidebarNavItem({ item, expanded }: SidebarNavItemProps) {
+export function SidebarNavItem({
+  item,
+  expanded,
+  onClick,
+}: SidebarNavItemProps) {
   const Icon = item.icon;
   const location = useLocation();
   const isActive = location.pathname === item.href;
@@ -22,6 +27,7 @@ export function SidebarNavItem({ item, expanded }: SidebarNavItemProps) {
   const linkContent = (
     <Link
       to={item.href}
+      onClick={onClick}
       className={cn(
         "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",

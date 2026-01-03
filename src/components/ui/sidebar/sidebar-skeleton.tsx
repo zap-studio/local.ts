@@ -1,6 +1,6 @@
 export function SidebarSkeleton() {
   return (
-    <aside className="flex h-screen w-64 flex-col border-r border-sidebar-border bg-sidebar">
+    <aside className="hidden h-screen w-64 flex-col border-r border-sidebar-border bg-sidebar md:flex">
       <SidebarHeaderSkeleton />
       <SidebarNavSkeleton />
       <SidebarBottomNavSkeleton />

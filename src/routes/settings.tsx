@@ -42,10 +42,10 @@ function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8">
+    <div className="mx-auto w-full max-w-2xl space-y-6 sm:space-y-8">
       <div>
-        <h1 className="text-2xl font-bold">Settings</h1>
-        <p className="mt-2 text-muted-foreground">
+        <h1 className="text-xl font-bold sm:text-2xl">Settings</h1>
+        <p className="mt-1 text-sm text-muted-foreground sm:mt-2 sm:text-base">
           Configure your application preferences here.
         </p>
       </div>
@@ -64,7 +64,7 @@ function SettingsPage() {
             onValueChange={(value) => handleUpdateSetting("theme", value)}
             options={THEME_OPTIONS}
             disabled={isSaving}
-            className="w-40"
+            className="w-full sm:w-40"
           />
         </SettingRow>
 
@@ -145,7 +145,7 @@ function SettingsPage() {
             onValueChange={(value) => handleUpdateSetting("logLevel", value)}
             options={LOG_LEVEL_OPTIONS}
             disabled={isSaving || !settings.enableLogging}
-            className="w-40"
+            className="w-full sm:w-40"
           />
         </SettingRow>
       </SettingsSection>

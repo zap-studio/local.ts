@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { SidebarHeader } from "@/components/ui/sidebar/sidebar-header";
+import { SidebarMobile } from "@/components/ui/sidebar/sidebar-mobile";
 import { SidebarNav } from "@/components/ui/sidebar/sidebar-nav";
 import { SidebarSkeleton } from "@/components/ui/sidebar/sidebar-skeleton";
 import { SIDEBAR_BOTTOM_ITEMS, SIDEBAR_TOP_ITEMS } from "@/constants/sidebar";
@@ -43,19 +44,30 @@ export function Sidebar() {
   }
 
   return (
-    <aside
-      className={cn(
-        "flex h-screen flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300",
-        expanded ? "w-64" : "w-16"
-      )}
-    >
-      <SidebarHeader expanded={expanded} onToggle={toggleExpanded} />
-      <SidebarNav items={SIDEBAR_TOP_ITEMS} expanded={expanded} />
-      <SidebarNav
-        items={SIDEBAR_BOTTOM_ITEMS}
+    <>
+      {/* Mobile sidebar */}
+      <SidebarMobile
         expanded={expanded}
-        variant="bottom"
+        onToggle={toggleExpanded}
+        topItems={SIDEBAR_TOP_ITEMS}
+        bottomItems={SIDEBAR_BOTTOM_ITEMS}
       />
-    </aside>
+
+      {/* Desktop sidebar */}
+      <aside
+        className={cn(
+          "hidden h-screen flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300 md:flex",
+          expanded ? "md:w-64" : "md:w-16"
+        )}
+      >
+        <SidebarHeader expanded={expanded} onToggle={toggleExpanded} />
+        <SidebarNav items={SIDEBAR_TOP_ITEMS} expanded={expanded} />
+        <SidebarNav
+          items={SIDEBAR_BOTTOM_ITEMS}
+          expanded={expanded}
+          variant="bottom"
+        />
+      </aside>
+    </>
   );
 }
