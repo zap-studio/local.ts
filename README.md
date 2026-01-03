@@ -33,11 +33,11 @@ After cloning this starter kit, update the following files to match your project
 
 ### Project Identity
 
-| File | Fields to Update |
-| ---- | ---------------- |
-| `package.json` | `name`, `version`, `description` |
-| `src-tauri/Cargo.toml` | `name`, `version`, `description`, `authors` |
-| `src-tauri/tauri.conf.json` | `productName`, `version`, `identifier` |
+| File                        | Fields to Update                            |
+| --------------------------- | ------------------------------------------- |
+| `package.json`              | `name`, `version`, `description`            |
+| `src-tauri/Cargo.toml`      | `name`, `version`, `description`, `authors` |
+| `src-tauri/tauri.conf.json` | `productName`, `version`, `identifier`      |
 
 ### App Icons
 
@@ -191,14 +191,14 @@ The database module is implemented in `src-tauri/src/database/` and provides:
 
 ### What You Write vs What's Automatic
 
-| Task | Manual or Automatic? |
-| ---- | -------------------- |
-| Writing SQL migrations (`up.sql`, `down.sql`) | **Manual** — You write the SQL |
-| Writing `schema.rs` table definitions | **Manual** — You write the Diesel table macros |
-| Writing model structs and commands | **Manual** — You create the Rust code |
-| Running pending migrations on app startup | **Automatic** — Diesel handles this |
-| Tracking which migrations have been applied | **Automatic** — Diesel uses `__diesel_schema_migrations` table |
-| Creating the database file | **Automatic** — Created on first run |
+| Task                                          | Manual or Automatic?                                           |
+| --------------------------------------------- | -------------------------------------------------------------- |
+| Writing SQL migrations (`up.sql`, `down.sql`) | **Manual** — You write the SQL                                 |
+| Writing `schema.rs` table definitions         | **Manual** — You write the Diesel table macros                 |
+| Writing model structs and commands            | **Manual** — You create the Rust code                          |
+| Running pending migrations on app startup     | **Automatic** — Diesel handles this                            |
+| Tracking which migrations have been applied   | **Automatic** — Diesel uses `__diesel_schema_migrations` table |
+| Creating the database file                    | **Automatic** — Created on first run                           |
 
 ### How It Works
 
@@ -213,11 +213,11 @@ When your app starts, the database is initialized automatically:
 
 The database file is stored in the platform-specific app data directory:
 
-| Platform | Location                                                       |
-| -------- | -------------------------------------------------------------- |
-| Linux    | `~/.local/share/{bundleIdentifier}/`                           |
-| macOS    | `~/Library/Application Support/{bundleIdentifier}/`            |
-| Windows  | `C:\Users\{User}\AppData\Roaming\{bundleIdentifier}\`          |
+| Platform | Location                                              |
+| -------- | ----------------------------------------------------- |
+| Linux    | `~/.local/share/{bundleIdentifier}/`                  |
+| macOS    | `~/Library/Application Support/{bundleIdentifier}/`   |
+| Windows  | `C:\Users\{User}\AppData\Roaming\{bundleIdentifier}\` |
 
 ### Project Structure
 
@@ -242,6 +242,7 @@ src-tauri/
 Migrations are SQL files that define your database schema. **You must write these yourself** — Diesel does not generate them automatically.
 
 Each migration consists of:
+
 - `up.sql` — SQL to apply the migration (CREATE TABLE, ALTER TABLE, etc.)
 - `down.sql` — SQL to revert the migration (DROP TABLE, etc.)
 
