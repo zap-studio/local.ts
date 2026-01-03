@@ -33,5 +33,10 @@
     "id": 7,
     "task": "add template icon for local.ts",
     "completed": false
+  },
+  {
+    "id": 8,
+    "task": "create public template repository on zap studio",
+    "completed": false
   }
 ]
