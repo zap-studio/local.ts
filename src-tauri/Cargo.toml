@@ -1,7 +1,7 @@
 [package]
 name = "local-ts"
 version = "0.1.0"
-description = "A starter-kit to make local-first app with Tauri."
+description = "A starter kit for building local-first applications for mobile and desktop."
 authors = ["Alexandre Trotel"]
 edition = "2024"
 
