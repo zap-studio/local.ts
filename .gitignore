@@ -7,6 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Diesel
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
 # node_modules
 node_modules
 dist

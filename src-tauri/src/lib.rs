@@ -1,5 +1,8 @@
+mod database;
 mod logging;
 mod system_tray;
+
+use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -8,9 +11,19 @@ pub fn run() {
         .plugin(logging::build().build())
         .setup(|app| {
             logging::init(app);
+
+            // Initialize database and manage the connection pool
+            let pool = database::init(app.handle())?;
+            app.manage(pool);
+
             system_tray::setup(app)?;
             Ok(())
         })
+        // Register your model commands here as you create them:
+        // .invoke_handler(tauri::generate_handler![
+        //     database::models::user::get_user,
+        //     database::models::user::create_user,
+        // ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
