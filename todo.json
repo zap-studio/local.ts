@@ -8,5 +8,10 @@
     "id": 11,
     "task": "write docs",
     "completed": false
+  },
+  {
+    "id": 12,
+    "task": "promote this starter kit",
+    "completed": false
   }
 ]
