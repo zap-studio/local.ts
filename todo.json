@@ -2,17 +2,17 @@
   {
     "id": 1,
     "task": "add turbo to synchronize build, check, lint, format, validate commands from src and src-tauri",
-    "completed": false
+    "completed": true
   },
   {
     "id": 2,
     "task": "add 0xlint",
-    "completed": false
+    "completed": true
   },
   {
     "id": 3,
     "task": "add 0xfmt",
-    "completed": false
+    "completed": true
   },
   {
     "id": 4,
