@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 
+import { isTauri } from "@/lib/platform";
 import { useSettings } from "@/stores/settings";
 import { useTheme } from "@/stores/theme";
 
@@ -13,6 +14,11 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
   const [error, setError] = useState<Error | null>(null);
   const initializeSettings = useSettings((state) => state.initialize);
   const initializeTheme = useTheme((state) => state.initialize);
+
+  // Check if running in browser (not Tauri)
+  if (!isTauri()) {
+    return <NativeOnlyScreen />;
+  }
 
   useEffect(() => {
     const init = async () => {
@@ -84,6 +90,23 @@ function InitializationError({ error, onRetry }: InitializationErrorProps) {
       >
         Retry
       </button>
+    </div>
+  );
+}
+
+function NativeOnlyScreen() {
+  return (
+    <div className="flex h-screen flex-col items-center justify-center gap-6 p-6">
+      <div className="text-center flex flex-col items-center justify-center gap-2">
+        <h1 className="text-2xl font-bold">Native App Required</h1>
+        <p className="max-w-md text-muted-foreground">
+          This application is designed to run as a native desktop or mobile app.
+          It cannot run in a web browser.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Please download and install the native application for your platform.
+        </p>
+      </div>
     </div>
   );
 }
