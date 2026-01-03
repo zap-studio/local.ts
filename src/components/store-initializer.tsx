@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 
 import { useSettings } from "@/stores/settings";
@@ -19,27 +20,33 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
         await initializeSettings();
         initializeTheme();
         setIsInitialized(true);
+
+        // Close splash screen and show main window
+        await invoke("close_splashscreen");
       } catch (err) {
         console.error("Failed to initialize stores:", err);
         setError(err instanceof Error ? err : new Error("Unknown error"));
+
+        // Still close splash screen on error to show error UI
+        await invoke("close_splashscreen").catch(console.error);
       }
     };
 
     init();
   }, [initializeSettings, initializeTheme]);
 
-  const handleRetry = () => {
+  const handleRetry = async () => {
     setError(null);
     setIsInitialized(false);
-    initializeSettings()
-      .then(() => {
-        initializeTheme();
-        setIsInitialized(true);
-      })
-      .catch((err) => {
-        console.error("Retry failed:", err);
-        setError(err instanceof Error ? err : new Error("Unknown error"));
-      });
+
+    try {
+      await initializeSettings();
+      initializeTheme();
+      setIsInitialized(true);
+    } catch (err) {
+      console.error("Retry failed:", err);
+      setError(err instanceof Error ? err : new Error("Unknown error"));
+    }
   };
 
   if (error) {

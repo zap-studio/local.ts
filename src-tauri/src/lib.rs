@@ -39,6 +39,7 @@ pub fn run() {
             commands::settings::get_app_settings,
             commands::settings::update_app_settings,
             commands::settings::set_tray_visible,
+            commands::window::close_splashscreen,
         ])
         .on_window_event(|window, event| {
             #[cfg(desktop)]

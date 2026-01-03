@@ -10,7 +10,20 @@
     "frontendDist": "../dist"
   },
   "app": {
-    "windows": [],
+    "windows": [
+      {
+        "title": "Loading...",
+        "label": "splashscreen",
+        "width": 400,
+        "height": 300,
+        "center": true,
+        "decorations": false,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "resizable": false,
+        "url": "splash.html"
+      }
+    ],
     "security": {
       "csp": {
         "default-src": "'self' customprotocol: asset:",
