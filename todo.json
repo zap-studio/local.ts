@@ -28,10 +28,5 @@
     "id": 11,
     "task": "write docs",
     "completed": false
-  },
-  {
-    "id": 12,
-    "task": "add github actions",
-    "completed": false
   }
 ]
