@@ -1,10 +1,5 @@
 [
   {
-    "id": 6,
-    "task": "basic settings page",
-    "completed": false
-  },
-  {
     "id": 7,
     "task": "add template icon for local.ts",
     "completed": false

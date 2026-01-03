@@ -8,7 +8,9 @@ A starter kit for building local-first applications for mobile and desktop.
 - **Cross-platform** — Build for macOS, Windows, Linux, iOS, and Android
 - **Lightweight** — Native performance with a small bundle size
 - **Secure** — Built-in Content Security Policy and Tauri's security model
+- **App Settings** — Persistent settings with theme, behavior, and developer options
 - **System Tray** — Built-in system tray with show/hide and quit actions
+- **Autostart** — Launch at login with user-configurable settings
 - **Window State** — Remembers window size and position across app restarts
 - **Logging** — Configurable logging to console, webview, and log files
 - **SQLite Database** — Diesel ORM with migrations and Tauri commands
@@ -21,6 +23,11 @@ A starter kit for building local-first applications for mobile and desktop.
 - [Node.js](https://nodejs.org/) (v18+)
 - [pnpm](https://pnpm.io/)
 - [Rust](https://www.rust-lang.org/tools/install)
+- [Diesel CLI](https://diesel.rs/guides/getting-started) (for database migrations)
+
+  ```bash
+  cargo install diesel_cli --no-default-features --features sqlite
+  ```
 
 ### Installation
 
@@ -42,6 +49,32 @@ After cloning this starter kit, update the following files to match your project
 | `src-tauri/Cargo.toml`      | `name`, `version`, `description`, `authors` |
 | `src-tauri/tauri.conf.json` | `productName`, `version`, `identifier`      |
 
+### Sidebar Navigation
+
+Customize the sidebar navigation items by editing `src/constants/sidebar.ts`:
+
+```typescript
+import { Home, Settings } from "lucide-react";
+
+import type { SidebarItem } from "@/components/sidebar";
+
+// Top navigation items in the sidebar
+export const SIDEBAR_TOP_ITEMS: SidebarItem[] = [
+  { icon: Home, label: "Home", href: "/" },
+];
+
+// Bottom navigation items in the sidebar
+export const SIDEBAR_BOTTOM_ITEMS: SidebarItem[] = [
+  { icon: Settings, label: "Settings", href: "/settings" },
+];
+```
+
+Each `SidebarItem` has:
+
+- `icon` — A Lucide React icon component
+- `label` — Display name for the item
+- `href` — Route path (must match a route in `src/routes/`)
+
 ### App Icons
 
 Replace the default icons with your own:
@@ -58,7 +91,7 @@ For comprehensive documentation on building with Tauri, visit the [Tauri Documen
 
 ## System Tray
 
-This starter kit comes with a system tray pre-configured, allowing your app to run in the background — a common requirement for most desktop applications.
+This starter kit comes with a system tray pre-configured, allowing your app to run in the background — a common requirement for most desktop applications. Users can toggle tray visibility from the Settings page.
 
 ### What's Included
 
@@ -70,6 +103,7 @@ The system tray is implemented in `src-tauri/src/system_tray.rs` and provides:
   - **Hide** — Hides the main window
   - **Quit** — Exits the application
 - **Left-click behavior** — Clicking the tray icon shows and focuses the main window
+- **Settings integration** — Tray visibility is controlled via the Settings page and persisted in the database
 
 ### Removing the System Tray
 
@@ -97,6 +131,77 @@ If you don't need system tray functionality, you can remove it:
    ```
 
 For more details on system tray customization, see the [Tauri System Tray documentation](https://tauri.app/learn/system-tray/).
+
+## Autostart
+
+This starter kit includes autostart functionality, allowing your app to launch automatically when the user logs in. Users can enable or disable this from the Settings page.
+
+### What's Included
+
+The autostart feature uses the [Tauri Autostart Plugin](https://tauri.app/plugin/autostart/) and provides:
+
+- **Launch at login** — Automatically start the app when the user logs into their system
+- **Settings integration** — Toggle autostart from the Settings page
+- **Cross-platform support** — Works on macOS, Windows, and Linux
+
+### Usage from JavaScript
+
+```typescript
+import {
+  enable,
+  disable,
+  isEnabled,
+} from '@tauri-apps/plugin-autostart';
+
+// Enable autostart
+await enable();
+
+// Check if autostart is enabled
+const enabled = await isEnabled();
+
+// Disable autostart
+await disable();
+```
+
+### Removing Autostart
+
+If you don't need autostart functionality:
+
+1. **Remove the plugin initialization** from `src-tauri/src/lib.rs`:
+
+   ```diff
+   - // Initialize autostart plugin
+   - #[cfg(desktop)]
+   - app.handle().plugin(tauri_plugin_autostart::init(
+   -     tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+   -     None,
+   - ))?;
+   ```
+
+2. **Remove the dependency** from `src-tauri/Cargo.toml`:
+
+   ```diff
+   - [target.'cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))'.dependencies]
+   - tauri-plugin-autostart = "2"
+   ```
+
+3. **Remove the permissions** from `src-tauri/capabilities/default.json`:
+
+   ```diff
+   - "autostart:allow-enable",
+   - "autostart:allow-disable",
+   - "autostart:allow-is-enabled"
+   ```
+
+4. **Remove the JavaScript package**:
+
+   ```bash
+   pnpm remove @tauri-apps/plugin-autostart
+   ```
+
+5. **Update the Settings page** in `src/routes/settings.tsx` to remove the "Launch at Login" setting.
+
+For more details, see the [Tauri Autostart documentation](https://tauri.app/plugin/autostart/).
 
 ## Logging
 
@@ -272,6 +377,169 @@ If you don't need window state persistence, you can remove it:
 
 For more details on window state customization, see the [Tauri Window State documentation](https://tauri.app/plugin/window-state/).
 
+## App Settings
+
+This starter kit includes a complete settings system with a pre-built settings page, persistent storage in SQLite, and theme support out of the box.
+
+### What's Included
+
+The settings system is implemented across the frontend and backend:
+
+- **Settings page** — Pre-built UI at `/settings` with organized sections
+- **Theme support** — Light, dark, and system mode with automatic detection
+- **Persistent storage** — Settings stored in SQLite and preserved across restarts
+- **Type-safe API** — Full TypeScript types matching Rust structs
+
+### Available Settings
+
+| Category       | Setting             | Description                                   | Default  |
+| -------------- | ------------------- | --------------------------------------------- | -------- |
+| **Appearance** | Theme               | Light, dark, or system color scheme           | `system` |
+|                | Sidebar Expanded    | Keep sidebar expanded by default              | `true`   |
+| **Behavior**   | Show in System Tray | Show app icon in system tray                  | `true`   |
+|                | Launch at Login     | Auto-start with system (via autostart plugin) | `false`  |
+| **Developer**  | Enable Logging      | Enable detailed logging                       | `true`   |
+|                | Log Level           | Minimum log level to record                   | `info`   |
+
+### Usage from JavaScript
+
+```typescript
+import { getSettings, updateSettings } from '@/lib/settings';
+import type { Settings, SettingsUpdate } from '@/lib/settings/types';
+
+// Get current settings
+const settings: Settings = await getSettings();
+
+// Update a single setting
+await updateSettings({ theme: 'dark' });
+
+// Update multiple settings
+await updateSettings({
+  theme: 'light',
+  sidebarExpanded: false,
+  enableLogging: true,
+});
+```
+
+### Using the Theme
+
+The theme store is managed with Zustand and automatically syncs with settings:
+
+```typescript
+import { useTheme } from '@/stores/theme';
+import { useSettings } from '@/stores/settings';
+
+function MyComponent() {
+  const setTheme = useTheme((state) => state.setTheme);
+  const theme = useTheme((state) => state.theme);
+  const resolvedTheme = useTheme((state) => state.resolvedTheme);
+
+  // theme: 'light' | 'dark' | 'system'
+  // resolvedTheme: 'light' | 'dark' (actual applied theme)
+
+  return (
+    <button onClick={() => setTheme('dark')}>
+      Switch to Dark Mode
+    </button>
+  );
+}
+```
+
+### Adding New Settings
+
+To add a new setting:
+
+1. **Generate a new migration**:
+
+   ```bash
+   cd src-tauri
+   diesel migration generate add_my_setting
+   ```
+
+2. **Write the SQL** in the generated `up.sql`:
+
+   ```sql
+   ALTER TABLE settings ADD COLUMN my_setting INTEGER NOT NULL DEFAULT 0;
+   ```
+
+3. **Write the rollback** in `down.sql`:
+
+   ```sql
+   ALTER TABLE settings DROP COLUMN my_setting;
+   ```
+
+4. **Run the migration** to apply it and regenerate `schema.rs`:
+
+   ```bash
+   diesel migration run
+   ```
+
+   The schema will be automatically updated with the new column.
+
+5. **Update the Rust models** in `src-tauri/src/database/models/settings.rs`:
+   - Add field to `SettingsRow`, `Settings`, `SettingsUpdate`, and `SettingsChangeset`
+
+6. **Update the TypeScript types** in `src/lib/settings/types.ts`:
+
+   ```typescript
+   export interface Settings {
+     // ... existing fields
+     mySetting: boolean;
+   }
+   ```
+
+7. **Add UI control** in `src/routes/settings.tsx`
+
+### Project Structure
+
+```
+src-tauri/
+├── migrations/
+│   └── 2026-01-03-120114_create_settings/
+│       ├── up.sql           # Creates settings table
+│       └── down.sql         # Drops settings table
+└── src/database/models/
+    └── settings.rs          # Settings model and CRUD operations
+
+src/
+├── lib/
+│   └── settings/
+│       ├── index.ts         # API functions for settings
+│       └── types.ts         # TypeScript types
+├── stores/
+│   ├── settings.ts          # Settings Zustand store
+│   └── theme.ts             # Theme Zustand store
+├── components/
+│   └── store-initializer.tsx # Store initialization wrapper
+└── routes/
+    └── settings.tsx         # Settings page UI
+```
+
+### State Management
+
+This starter uses [Zustand](https://zustand.docs.pmnd.rs) for state management - a lightweight, unopinionated state management solution with no boilerplate.
+
+**Benefits:**
+
+- No React Context providers needed
+- Direct store access outside React components
+- Built-in selector optimization
+- Minimal bundle size (~1kb)
+
+**Example usage:**
+
+```typescript
+import { useSettings } from '@/stores/settings';
+
+// Select specific state slices (optimized re-renders)
+const settings = useSettings((state) => state.settings);
+const updateSettings = useSettings((state) => state.updateSettings);
+
+// Access store outside React
+import { useSettings } from '@/stores/settings';
+const currentSettings = useSettings.getState().settings;
+```
+
 ## SQLite Database
 
 This starter kit includes SQLite database support using [Diesel ORM](https://diesel.rs/) — a safe, extensible ORM and query builder for Rust. Database operations are performed on the Rust side and exposed to JavaScript via Tauri commands.
@@ -290,7 +558,8 @@ The database module is implemented in `src-tauri/src/database/` and provides:
 | Task                                          | Manual or Automatic?                                           |
 | --------------------------------------------- | -------------------------------------------------------------- |
 | Writing SQL migrations (`up.sql`, `down.sql`) | **Manual** — You write the SQL                                 |
-| Writing `schema.rs` table definitions         | **Manual** — You write the Diesel table macros                 |
+| Creating migration folders                    | **Automatic** — Generated via `diesel migration generate`      |
+| Writing `schema.rs` table definitions         | **Automatic** — Generated via `diesel migration run`           |
 | Writing model structs and commands            | **Manual** — You create the Rust code                          |
 | Running pending migrations on app startup     | **Automatic** — Diesel handles this                            |
 | Tracking which migrations have been applied   | **Automatic** — Diesel uses `__diesel_schema_migrations` table |
@@ -305,7 +574,7 @@ When your app starts, the database is initialized automatically:
 3. **Migration execution** — At runtime, Diesel checks which migrations have been applied and runs any pending ones
 4. **Connection pool** — A pool of database connections is created and managed via Tauri's state system
 
-> **Note:** You must write the migrations yourself. Diesel does not generate SQL for you — it only runs the migrations you create.
+> **Note:** While Diesel CLI generates migration folders and `schema.rs` automatically, you must write the SQL in `up.sql` and `down.sql` yourself. Diesel does not generate SQL for you — it only manages migrations and schema inference.
 
 The database file is stored in the platform-specific app data directory:
 
@@ -335,7 +604,7 @@ src-tauri/
 
 ### Creating Migrations
 
-Migrations are SQL files that define your database schema. **You must write these yourself** — Diesel does not generate them automatically.
+Migrations are SQL files that define your database schema. Diesel CLI helps you generate migration folders automatically with proper timestamps.
 
 Each migration consists of:
 
@@ -344,7 +613,14 @@ Each migration consists of:
 
 Here's how to create your first migration:
 
-1. **Create a migration directory** in `src-tauri/migrations/`:
+1. **Generate a migration** using Diesel CLI:
+
+   ```bash
+   cd src-tauri
+   diesel migration generate create_users
+   ```
+
+   This creates a new directory with a timestamp:
 
    ```
    migrations/
@@ -352,8 +628,6 @@ Here's how to create your first migration:
        ├── up.sql
        └── down.sql
    ```
-
-   The naming convention is `{timestamp}_{description}/`.
 
 2. **Write your SQL** in `up.sql`:
 
@@ -372,9 +646,15 @@ Here's how to create your first migration:
    DROP TABLE users;
    ```
 
-4. **Add the table definition** to `src-tauri/src/database/schema.rs`:
+4. **Run the migration** to apply it and auto-generate `schema.rs`:
 
-   This file must be written manually to match your SQL schema:
+   ```bash
+   diesel migration run
+   ```
+
+   This will:
+   - Create the `users` table in your database
+   - Automatically generate the table definition in `src-tauri/src/database/schema.rs`:
 
    ```rust
    diesel::table! {
@@ -386,6 +666,8 @@ Here's how to create your first migration:
        }
    }
    ```
+
+   > **Note:** Never edit `schema.rs` manually — it's regenerated automatically when you run migrations.
 
 5. **Create the model struct** in `src-tauri/src/database/models/user/mod.rs`:
 

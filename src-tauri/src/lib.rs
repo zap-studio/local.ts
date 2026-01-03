@@ -1,3 +1,4 @@
+mod commands;
 mod database;
 mod logging;
 mod system_tray;
@@ -20,14 +21,27 @@ pub fn run() {
             app.handle()
                 .plugin(tauri_plugin_window_state::Builder::default().build())?;
 
+            // Initialize autostart plugin
+            #[cfg(desktop)]
+            app.handle().plugin(tauri_plugin_autostart::init(
+                tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+                None,
+            ))?;
+
             // Initialize database and manage the connection pool
             let pool = database::init(app.handle())?;
-            app.manage(pool);
+            app.manage(pool.clone());
 
             window::setup(app)?;
-            system_tray::setup(app)?;
+            system_tray::setup(app, &pool)?;
+
             Ok(())
         })
+        .invoke_handler(tauri::generate_handler![
+            commands::settings::get_app_settings,
+            commands::settings::update_app_settings,
+            commands::settings::set_tray_visible,
+        ])
         .on_window_event(|window, event| {
             #[cfg(desktop)]
             if let tauri::WindowEvent::CloseRequested { .. } = event {

@@ -16,6 +16,9 @@ pub enum DbError {
 
     #[error("Database initialization error: {0}")]
     Init(String),
+
+    #[error("Invalid data: {0}")]
+    InvalidData(String),
 }
 
 // Implement Serialize for DbError so it can be returned from Tauri commands

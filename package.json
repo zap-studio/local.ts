@@ -22,6 +22,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-router": "^1.144.0",
     "@tauri-apps/api": "^2.9.1",
+    "@tauri-apps/plugin-autostart": "^2.5.1",
     "@tauri-apps/plugin-log": "^2",
     "@tauri-apps/plugin-opener": "^2.5.2",
     "@tauri-apps/plugin-window-state": "^2.4.1",
@@ -31,7 +32,8 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@tanstack/router-plugin": "^1.145.2",

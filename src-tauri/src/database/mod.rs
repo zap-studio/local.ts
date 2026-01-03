@@ -1,6 +1,7 @@
 pub mod error;
 pub mod models;
 pub mod schema;
+pub mod utils;
 
 use diesel::r2d2::{self, ConnectionManager};
 use diesel::sqlite::SqliteConnection;
@@ -12,7 +13,6 @@ use tauri::{AppHandle, Manager};
 pub use error::DbError;
 
 /// Embedded migrations that run automatically on startup.
-/// Migrations are compiled into the binary from the `migrations/` directory.
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
 
 /// Type alias for the connection pool.
