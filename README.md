@@ -175,7 +175,7 @@ If you don't need system tray functionality, you can remove it:
      }
    ```
 
-5. **Remove the system tray command** from the invoke handler in `src-tauri/src/lib.rs`:
+4. **Remove the system tray command** from the invoke handler in `src-tauri/src/lib.rs`:
 
    ```diff
      .invoke_handler(tauri::generate_handler![
