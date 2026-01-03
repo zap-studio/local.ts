@@ -1,10 +1,5 @@
 [
   {
-    "id": 5,
-    "task": "add basic sidebar features",
-    "completed": false
-  },
-  {
     "id": 6,
     "task": "basic settings page",
     "completed": false
