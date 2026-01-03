@@ -1,4 +1,4 @@
-import { Label } from "@/components/label";
+import { Label } from "@/components/ui/label";
 
 interface SettingRowProps {
   label: string;

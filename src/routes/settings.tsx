@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import type { LogLevel } from "@/lib/tauri/settings/types";
 
-import { Select } from "@/components/select";
 import { SettingRow } from "@/components/setting-row";
 import { SettingsSection } from "@/components/settings-section";
-import { Switch } from "@/components/switch";
+import { Select } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { LOG_LEVEL_OPTIONS, THEME_OPTIONS } from "@/constants/settings";
 import { useHandleSettings } from "@/hooks/use-handle-settings";
 

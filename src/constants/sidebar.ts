@@ -1,6 +1,6 @@
 import { Home, Settings } from "lucide-react";
 
-import type { SidebarItem } from "@/components/sidebar";
+import type { SidebarItem } from "@/components/ui/sidebar";
 
 export const SIDEBAR_TOP_ITEMS: SidebarItem[] = [
   { icon: Home, label: "Home", href: "/" },
