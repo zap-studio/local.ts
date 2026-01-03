@@ -63,6 +63,7 @@ export function useHandleSettings() {
         {
           onError: () => setSettings(previousSettings),
           errorMessage: `Failed to update ${String(key)}`,
+          successMessage: "Settings updated",
         }
       );
     },
@@ -85,6 +86,7 @@ export function useHandleSettings() {
         {
           onError: () => setAutostartEnabled(previousValue),
           errorMessage: "Failed to update autostart setting",
+          successMessage: enabled ? "Autostart enabled" : "Autostart disabled",
         }
       );
     },
@@ -106,6 +108,9 @@ export function useHandleSettings() {
         {
           onError: () => setSettings(previousSettings),
           errorMessage: "Failed to update tray visibility",
+          successMessage: visible
+            ? "System tray enabled"
+            : "System tray disabled",
         }
       );
     },
