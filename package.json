@@ -10,7 +10,8 @@
     "format": "pnpm dlx ultracite fix",
     "lint": "pnpm dlx ultracite check",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "validate": "turbo run build check format lint test"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.9.1",
