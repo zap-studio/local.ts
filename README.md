@@ -179,26 +179,68 @@ This starter kit includes autostart functionality, allowing your app to launch a
 The autostart feature uses the [Tauri Autostart Plugin](https://tauri.app/plugin/autostart/) and provides:
 
 - **Launch at login** — Automatically start the app when the user logs into their system
-- **Settings integration** — Toggle autostart from the Settings page
+- **Settings integration** — Toggle autostart from the Settings page with database persistence
 - **Cross-platform support** — Works on macOS, Windows, and Linux
 
-### Usage from JavaScript
+### How It's Implemented
+
+The autostart plugin is initialized in `src-tauri/src/lib.rs` with platform-specific configuration:
+
+```rust
+#[cfg(desktop)]
+app.handle().plugin(tauri_plugin_autostart::init(
+    tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+    None,
+))?;
+```
+
+**macOS Launcher Options:**
+- `LaunchAgent` — Starts when user logs in (recommended for most apps)
+- `AppleScript` — Alternative method using AppleScript
+
+The Settings page (`src/routes/settings.tsx`) provides a toggle switch that:
+
+1. Calls the plugin's `enable()` or `disable()` function
+2. Updates the database setting via `updateSettings({ launchAtLogin: enabled })`
+3. Shows success/error feedback to the user
+
+The integration is handled in `src/hooks/use-handle-settings.ts`:
 
 ```typescript
-import {
-  enable,
-  disable,
-  isEnabled,
-} from '@tauri-apps/plugin-autostart';
+const handleAutostartChange = async (enabled: boolean) => {
+  await (enabled ? enableAutostart() : disableAutostart());
+  await updateSettings({ launchAtLogin: enabled });
+};
+```
 
-// Enable autostart
-await enable();
+### Customization Options
 
-// Check if autostart is enabled
-const enabled = await isEnabled();
+**Start app minimized or in background:**
 
-// Disable autostart
-await disable();
+Modify your app initialization in `src-tauri/src/lib.rs` to check if started via autostart:
+
+```rust
+.setup(|app| {
+    // Check if app was auto-started
+    let started_hidden = std::env::args().any(|arg| arg == "--hidden");
+
+    if started_hidden {
+        // Hide main window on autostart
+        if let Some(window) = app.get_webview_window("main") {
+            let _ = window.hide();
+        }
+    }
+    // ... rest of setup
+})
+```
+
+Then update the autostart args:
+
+```rust
+app.handle().plugin(tauri_plugin_autostart::init(
+    tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+    Some(vec!["--hidden"]),
+))?;
 ```
 
 ### Removing Autostart
@@ -243,15 +285,17 @@ For more details, see the [Tauri Autostart documentation](https://tauri.app/plug
 
 ## Logging
 
-This starter kit includes built-in logging capabilities, essential for debugging and monitoring your application.
+This starter kit includes built-in logging capabilities with multi-target output, essential for debugging and monitoring your application.
 
 ### What's Included
 
-The logging module is implemented in `src-tauri/src/logging.rs` and provides:
+The logging module is implemented in `src-tauri/src/plugins/logging.rs` and provides:
 
 - **Console output** — Logs printed to stdout for development
 - **Webview console** — Rust logs forwarded to the browser devtools
-- **Persistent log files** — Logs saved to the app's log directory with automatic rotation
+- **Persistent log files** — Logs saved with automatic rotation (50KB per file)
+- **Local timezone** — Timestamps use your system's timezone
+- **Settings integration** — Enable/disable logging and set log level from Settings page
 
 Log files are stored in the platform-specific log directory:
 
@@ -261,27 +305,78 @@ Log files are stored in the platform-specific log directory:
 | macOS    | `~/Library/Logs/{bundleIdentifier}`                     |
 | Windows  | `C:\Users\{User}\AppData\Local\{bundleIdentifier}\logs` |
 
-### Usage from JavaScript
+### How It's Configured
 
-```typescript
-import { trace, debug, info, warn, error, attachConsole } from '@tauri-apps/plugin-log';
-
-// Attach console to see Rust logs in browser devtools
-const detach = await attachConsole();
-
-// Log from JavaScript
-info('User logged in');
-warn('Connection slow');
-error('Failed to save data');
-```
-
-### Usage from Rust
+The logging configuration in `src-tauri/src/plugins/logging.rs` sets up three output targets:
 
 ```rust
-log::info!("Application started");
-log::debug!("Processing {} items", count);
-log::error!("Failed to connect: {}", err);
+pub fn build() -> tauri_plugin_log::Builder {
+    tauri_plugin_log::Builder::new()
+        .targets([
+            Target::new(TargetKind::Stdout),           // Console
+            Target::new(TargetKind::Webview),          // Browser devtools
+            Target::new(TargetKind::LogDir {
+                file_name: Some("logs".to_string()),   // File: logs
+            }),
+        ])
+        .timezone_strategy(TimezoneStrategy::UseLocal) // Local time
+        .max_file_size(50_000)                         // 50KB rotation
+}
 ```
+
+**Key Configuration Options:**
+
+- **`targets`** — Where logs are sent (stdout, webview, files)
+- **`timezone_strategy`** — `UseLocal` (system time) or `UseUtc` (UTC time)
+- **`max_file_size`** — File rotation threshold in bytes (50KB = ~500-1000 log lines)
+
+### Customization Options
+
+**Change file rotation size:**
+
+```rust
+.max_file_size(100_000)  // 100KB per file
+```
+
+**Log to multiple files by level:**
+
+```rust
+.targets([
+    Target::new(TargetKind::Stdout),
+    Target::new(TargetKind::Webview),
+    Target::new(TargetKind::LogDir { file_name: Some("errors".to_string()) })
+        .filter(|metadata| metadata.level() == log::LevelFilter::Error),
+    Target::new(TargetKind::LogDir { file_name: Some("info".to_string()) })
+        .filter(|metadata| metadata.level() <= log::LevelFilter::Info),
+])
+```
+
+**Disable specific targets in production:**
+
+```rust
+let targets = if cfg!(debug_assertions) {
+    vec![
+        Target::new(TargetKind::Stdout),
+        Target::new(TargetKind::Webview),
+        Target::new(TargetKind::LogDir { file_name: Some("logs".to_string()) }),
+    ]
+} else {
+    vec![
+        Target::new(TargetKind::LogDir { file_name: Some("logs".to_string()) }),
+    ]
+};
+
+tauri_plugin_log::Builder::new().targets(targets)
+```
+
+**Filter by module:**
+
+```rust
+.level(log::LevelFilter::Info)
+.level_for("my_module", log::LevelFilter::Debug)  // More verbose for specific module
+```
+
+The Settings page allows users to toggle logging and set the minimum log level (trace, debug, info, warn, error) which can be read in your Rust code to adjust logging behavior dynamically.
 
 ### Removing Logging
 
@@ -324,49 +419,150 @@ For more details on logging customization, see the [Tauri Logging documentation]
 
 ## Notifications
 
-This starter kit includes native notification support, allowing your app to send system notifications according to user preferences.
+This starter kit includes native notification support with permission handling and user preferences, allowing your app to send system notifications responsibly.
 
 ### What's Included
 
 The notification system uses the [Tauri Notification Plugin](https://tauri.app/plugin/notification/) and provides:
 
 - **Native notifications** — System-level notifications on all platforms
-- **User preferences** — Toggle controls in Settings
-- **Permission handling** — Automatic permission requests and status checking
+- **Settings integration** — User can enable/disable notifications from Settings page
+- **Permission handling** — Automatic permission requests with fallback handling
+- **Helper functions** — Wrapper functions that respect user preferences
 
-### Usage from JavaScript
+### How It's Implemented
+
+The notification helpers are implemented in `src/lib/tauri/notifications/` with two main functions:
+
+**1. `notify()` — Respects user preferences:**
 
 ```typescript
-import { notify, notifyForced } from '@/lib/tauri/notifications';
+export async function notify(
+  options: NotificationOptions,
+  settings: Settings
+): Promise<boolean> {
+  // Check if notifications are enabled in settings
+  if (!settings.enableNotifications) {
+    return false;
+  }
+
+  // Ensure we have permission
+  const hasPermission = await ensureNotificationPermission();
+  if (!hasPermission) {
+    return false;
+  }
+
+  // Send the notification
+  sendNotification({ title, body, icon });
+  return true;
+}
+```
+
+**2. `notifyForced()` — For critical alerts:**
+
+```typescript
+export async function notifyForced(
+  options: NotificationOptions
+): Promise<boolean> {
+  // Bypasses settings check but still requires permission
+  const hasPermission = await ensureNotificationPermission();
+  if (!hasPermission) return false;
+
+  sendNotification({ title, body, icon });
+  return true;
+}
+```
+
+**Permission handling (`src/lib/tauri/notifications/permissions.ts`):**
+
+The Settings page automatically requests permission when the user enables notifications:
+
+```typescript
+const handleNotificationChange = async (enabled: boolean) => {
+  if (enabled) {
+    const granted = await requestNotificationPermission();
+    if (!granted) {
+      return; // Don't enable if permission denied
+    }
+  }
+  await updateSettings({ enableNotifications: enabled });
+};
+```
+
+### Usage in Your App
+
+**Respect user preferences:**
+
+```typescript
+import { notify } from '@/lib/tauri/notifications';
 import { useSettings } from '@/stores/settings';
 
 // Get current settings
 const settings = useSettings.getState().settings;
 
-// Send a notification (respects user preferences)
-await notify({
+// Send notification (will check settings and permissions)
+const sent = await notify({
   title: 'Task Complete',
   body: 'Your export has finished',
 }, settings);
+
+if (sent) {
+  console.log('Notification sent');
+}
 ```
 
-### Permission Handling
+**Send critical alerts:**
 
 ```typescript
-import {
-  checkNotificationPermission,
-  requestNotificationPermission,
-  ensureNotificationPermission,
-} from '@/lib/tauri/notifications';
+import { notifyForced } from '@/lib/tauri/notifications';
 
-// Check if permission is granted
-const hasPermission = await checkNotificationPermission();
+// Send notification regardless of settings (still requires permission)
+await notifyForced({
+  title: 'Critical Error',
+  body: 'Your data could not be saved',
+});
+```
 
-// Request permission from the user
-const granted = await requestNotificationPermission();
+### Customization Options
 
-// Check and request if needed (recommended)
-const ready = await ensureNotificationPermission();
+**Add notification actions (buttons):**
+
+Extend the `NotificationOptions` interface and use the full plugin API:
+
+```typescript
+import { sendNotification } from '@tauri-apps/plugin-notification';
+
+sendNotification({
+  title: 'New Message',
+  body: 'You have a new message',
+  actions: [
+    { id: 'reply', title: 'Reply' },
+    { id: 'dismiss', title: 'Dismiss' },
+  ],
+});
+```
+
+**Add notification icons:**
+
+```typescript
+await notify({
+  title: 'Download Complete',
+  body: 'Your file is ready',
+  icon: 'path/to/icon.png',  // Path to icon file
+}, settings);
+```
+
+**Handle notification clicks:**
+
+Add an event listener in your app initialization:
+
+```typescript
+import { onNotificationReceived } from '@tauri-apps/plugin-notification';
+
+await onNotificationReceived((notification) => {
+  console.log('Notification clicked:', notification);
+  // Handle notification click (e.g., navigate to specific page)
+});
 ```
 
 ### Removing Notifications
@@ -405,49 +601,125 @@ For more details, see the [Tauri Notification documentation](https://tauri.app/p
 
 ## Window State
 
-This starter kit includes window state persistence, which automatically saves and restores window size and position across app restarts — providing a polished desktop experience.
+This starter kit includes automatic window state persistence, which saves and restores window size, position, and other properties across app restarts — providing a polished desktop experience.
 
 ### What's Included
 
 The window-state plugin is initialized in `src-tauri/src/lib.rs` and provides:
 
-- **Automatic persistence** — Window size and position saved on close
+- **Automatic persistence** — Window state saved on every close event
 - **Automatic restoration** — Previous window state restored on next launch
-- **Per-window settings** — Each window's state is tracked independently
+- **Per-window tracking** — Each window's state is tracked independently
+- **Cross-platform** — Works on macOS, Windows, and Linux
 
-### Usage from JavaScript
+### How It's Implemented
 
-You can manually save or restore window state if needed:
-
-```typescript
-import {
-  saveWindowState,
-  restoreStateCurrent,
-  StateFlags,
-} from '@tauri-apps/plugin-window-state';
-
-// Save window state manually
-saveWindowState(StateFlags.ALL);
-
-// Restore window state manually
-restoreStateCurrent(StateFlags.ALL);
-```
-
-### Usage from Rust
+The plugin is initialized during app setup in `src-tauri/src/lib.rs`:
 
 ```rust
+#[cfg(desktop)]
+app.handle()
+    .plugin(tauri_plugin_window_state::Builder::default().build())?;
+```
+
+Window state is automatically saved when windows close using the `on_window_event` handler:
+
+```rust
+.on_window_event(|window, event| {
+    #[cfg(desktop)]
+    if let tauri::WindowEvent::CloseRequested { .. } = event {
+        let _ = window.app_handle().save_window_state(StateFlags::all());
+    }
+})
+```
+
+**What gets saved:**
+
+- Window size (width, height)
+- Window position (x, y coordinates)
+- Window state (maximized, minimized, fullscreen)
+- Window decorations (visible or hidden)
+
+State is stored in a platform-specific file:
+
+| Platform | Location                                                          |
+| -------- | ----------------------------------------------------------------- |
+| Linux    | `~/.local/share/{bundleIdentifier}/.window-state`                 |
+| macOS    | `~/Library/Application Support/{bundleIdentifier}/.window-state`  |
+| Windows  | `C:\Users\{User}\AppData\Roaming\{bundleIdentifier}\.window-state` |
+
+### Customization Options
+
+**Save only specific state flags:**
+
+```rust
+use tauri_plugin_window_state::StateFlags;
+
+.on_window_event(|window, event| {
+    if let tauri::WindowEvent::CloseRequested { .. } = event {
+        // Only save size and position, not maximized/fullscreen state
+        let flags = StateFlags::SIZE | StateFlags::POSITION;
+        let _ = window.app_handle().save_window_state(flags);
+    }
+})
+```
+
+Available flags:
+- `StateFlags::SIZE` — Window dimensions
+- `StateFlags::POSITION` — Window location
+- `StateFlags::MAXIMIZED` — Maximized state
+- `StateFlags::VISIBLE` — Visibility state
+- `StateFlags::DECORATIONS` — Window decorations
+- `StateFlags::FULLSCREEN` — Fullscreen state
+- `StateFlags::all()` — All flags
+
+**Skip state restoration for specific windows:**
+
+Modify the plugin builder to skip certain window labels:
+
+```rust
+app.handle().plugin(
+    tauri_plugin_window_state::Builder::default()
+        .skip(vec!["splashscreen"])  // Don't restore splash screen state
+        .build()
+)?;
+```
+
+**Save state periodically instead of on close:**
+
+Use a timer to save state every few minutes:
+
+```rust
+use std::time::Duration;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
-// Save state of all open windows
-app.save_window_state(StateFlags::all());
+.setup(|app| {
+    let app_handle = app.handle().clone();
+    std::thread::spawn(move || {
+        loop {
+            std::thread::sleep(Duration::from_secs(300)); // 5 minutes
+            let _ = app_handle.save_window_state(StateFlags::all());
+        }
+    });
+    Ok(())
+})
 ```
 
-```rust
-use tauri_plugin_window_state::{WindowExt, StateFlags};
+**Restore with custom defaults:**
 
-// Restore a specific window's state
-window.restore_state(StateFlags::all());
+The plugin automatically restores state on launch. To provide fallback defaults if no saved state exists, configure your window dimensions in `tauri.conf.json`:
+
+```json
+{
+  "windows": [{
+    "width": 1280,
+    "height": 720,
+    "center": true
+  }]
+}
 ```
+
+These defaults are used only on first launch before any state is saved.
 
 ### Removing Window State
 
@@ -666,7 +938,7 @@ useEffect(() => {
 
 For more details on Tauri's multi-window setup, see the [Tauri Window documentation](https://tauri.app/develop/window/).
 
-## Logging
+## App Settings
 
 This starter kit includes a complete settings system with a pre-built settings page, persistent storage in SQLite, and theme support out of the box.
 
