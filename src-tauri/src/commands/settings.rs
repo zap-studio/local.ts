@@ -1,7 +1,8 @@
 use tauri::{State, tray::TrayIcon};
 
-use crate::database::models::settings::{Settings, SettingsUpdate, get_settings, update_settings};
+use crate::database::models::settings::{Settings, SettingsUpdate};
 use crate::database::{DbError, DbPool};
+use crate::services::settings::{get_settings, update_settings};
 
 /// Get the current application settings
 #[tauri::command]

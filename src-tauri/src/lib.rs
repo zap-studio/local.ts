@@ -1,6 +1,7 @@
 mod commands;
 mod database;
 mod plugins;
+mod services;
 
 use tauri::Manager;
 #[cfg(desktop)]

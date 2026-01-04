@@ -4,8 +4,7 @@ use tauri::{
     tray::{MouseButton, MouseButtonState, TrayIcon, TrayIconBuilder, TrayIconEvent},
 };
 
-use crate::database::DbPool;
-use crate::database::models::get_settings;
+use crate::{database::DbPool, services::settings::get_settings};
 
 /// Setup the system tray, apply initial visibility based on settings,
 /// and store the tray icon in app state for later management.

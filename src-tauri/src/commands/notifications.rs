@@ -1,6 +1,9 @@
 use tauri::State;
 
-use crate::database::{DbError, DbPool, models::settings::get_settings};
+use crate::{
+    database::{DbError, DbPool},
+    services::settings::get_settings,
+};
 
 /// Check if notifications are enabled in settings
 #[tauri::command]
