@@ -3,12 +3,12 @@ import {
   enable as enableAutostart,
   isEnabled as isAutostartEnabled,
 } from "@tauri-apps/plugin-autostart";
+import { requestPermission } from "@tauri-apps/plugin-notification";
 import { useCallback, useEffect, useState } from "react";
 
 import type { Settings, Theme } from "@/lib/tauri/settings/types";
 
 import { useAsyncAction } from "@/hooks/use-async-action";
-import { requestNotificationPermission } from "@/lib/tauri/notifications/permissions";
 import {
   getSettings,
   setTrayVisible,
@@ -126,8 +126,8 @@ export function useHandleSettings() {
 
       // If enabling notifications, request permission first
       if (enabled) {
-        const granted = await requestNotificationPermission();
-        if (!granted) {
+        const granted = await requestPermission();
+        if (granted !== "granted") {
           // Permission denied, don't enable notifications
           return;
         }
