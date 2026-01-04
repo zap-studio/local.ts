@@ -16,14 +16,17 @@
         "label": "main",
         "visible": false,
         "width": 1280,
-        "height": 720
+        "height": 720,
+        "center": true
       },
       {
         "title": "Loading...",
         "label": "splashscreen",
         "url": "splash.html",
         "width": 1280,
-        "height": 720
+        "height": 720,
+        "center": true,
+        "decorations": false
       }
     ],
     "security": {
