@@ -24,8 +24,8 @@ export async function notify(
   }
 
   // Ensure we have permission
-  const hasPermission = await ensureNotificationPermission();
-  if (!hasPermission) {
+  const granted = await ensureNotificationPermission();
+  if (granted !== "granted") {
     return false;
   }
 
@@ -46,8 +46,8 @@ export async function notify(
 export async function notifyForced(
   options: NotificationOptions
 ): Promise<boolean> {
-  const hasPermission = await ensureNotificationPermission();
-  if (!hasPermission) {
+  const granted = await ensureNotificationPermission();
+  if (granted !== "granted") {
     return false;
   }
 
