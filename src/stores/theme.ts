@@ -54,8 +54,6 @@ export const useTheme = create<ThemeStore>((set) => ({
       set({ theme: settings.theme, resolvedTheme: resolved });
     }
 
-    // Listen for system theme changes
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
       const currentTheme = useTheme.getState().theme;
       if (currentTheme === "system") {
@@ -64,6 +62,8 @@ export const useTheme = create<ThemeStore>((set) => ({
       }
     };
 
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     mediaQuery.addEventListener("change", handleChange);
   },
 }));
