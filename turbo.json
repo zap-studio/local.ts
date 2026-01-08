@@ -10,7 +10,7 @@
       ]
     },
     "check": {
-      "dependsOn": ["^check"]
+      "dependsOn": ["^build", "^check"]
     },
     "dev": {
       "persistent": true,
