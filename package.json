@@ -15,6 +15,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest run --ui",
     "test:watch": "vitest watch",
+    "typegen": "pnpm dlx tsr generate",
     "validate": "turbo run build check lint test"
   },
   "dependencies": {
