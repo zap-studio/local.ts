@@ -1,20 +1,5 @@
 [
   {
-    "id": 7,
-    "task": "add template icon for local.ts",
-    "completed": false
-  },
-  {
-    "id": 12,
-    "task": "promote this starter kit",
-    "completed": false
-  },
-  {
-    "id": 13,
-    "task": "add this repo and docs to context7",
-    "completed": false
-  },
-  {
     "id": 14,
     "task": "fix window state plugin",
     "completed": false
