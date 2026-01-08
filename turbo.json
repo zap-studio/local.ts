@@ -2,7 +2,7 @@
   "$schema": "https://turborepo.com/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": ["typegen", "^build"],
+      "dependsOn": ["^build"],
       "outputs": [
         "dist/**",
         "src-tauri/target/release/**",
@@ -10,7 +10,7 @@
       ]
     },
     "check": {
-      "dependsOn": ["typegen", "^check"]
+      "dependsOn": ["^check"]
     },
     "dev": {
       "persistent": true,
@@ -44,9 +44,6 @@
     "test:watch": {
       "dependsOn": ["^build"],
       "persistent": true,
-      "cache": false
-    },
-    "typegen": {
       "cache": false
     },
     "validate": {

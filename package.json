@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
-    "check": "tsc --noEmit",
-    "dev": "vite",
+    "build": "pnpm run generate-routes && tsc && vite build",
+    "check": "pnpm run generate-routes && tsc --noEmit",
+    "dev": "pnpm run watch-routes && vite",
     "format": "pnpm dlx ultracite fix",
+    "generate-routes": "tsr generate",
     "lint": "pnpm dlx ultracite check",
     "preview": "vite preview",
     "tauri": "tauri",
@@ -15,8 +16,8 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest run --ui",
     "test:watch": "vitest watch",
-    "typegen": "tsr generate",
-    "validate": "turbo run build check lint test"
+    "validate": "turbo run build check lint test",
+    "watch-routes": "tsr watch"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
