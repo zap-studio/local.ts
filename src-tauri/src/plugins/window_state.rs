@@ -3,9 +3,8 @@ use tauri_plugin_window_state::{AppHandleExt, StateFlags, WindowExt};
 
 /// Initialize the window state plugin and restore state for all windows
 pub fn init<R: Runtime>(app: &App<R>) -> Result<(), Box<dyn std::error::Error>> {
-    let _ = app
-        .handle()
-        .plugin(tauri_plugin_window_state::Builder::default().build());
+    app.handle()
+        .plugin(tauri_plugin_window_state::Builder::default().build())?;
 
     // Restore window state for all windows
     let windows = app.handle().windows();
