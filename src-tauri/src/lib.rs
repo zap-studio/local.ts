@@ -5,7 +5,7 @@ mod services;
 
 use tauri::Manager;
 #[cfg(desktop)]
-use tauri_plugin_window_state::{AppHandleExt, StateFlags};
+use tauri_plugin_window_state::{AppHandleExt, StateFlags, WindowExt};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -18,8 +18,19 @@ pub fn run() {
 
             // Initialize window state plugin
             #[cfg(desktop)]
-            app.handle()
-                .plugin(tauri_plugin_window_state::Builder::default().build())?;
+            {
+                let _ = app
+                    .handle()
+                    .plugin(tauri_plugin_window_state::Builder::default().build());
+
+                // Restore window state for the main window
+                let windows = app.handle().windows();
+
+                // Iterate over all windows
+                for (_, window) in windows {
+                    window.restore_state(StateFlags::all())?;
+                }
+            }
 
             // Initialize autostart plugin
             #[cfg(desktop)]
