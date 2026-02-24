@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm run generate-routes && tsc && vite build",
-    "check": "ultracite check",
+    "check": "tsc --noEmit",
     "dev": "concurrently -k \"pnpm run watch-routes\" \"vite\"",
     "format": "ultracite fix",
     "generate-routes": "tsr generate",
