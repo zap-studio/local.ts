@@ -1,17 +1,15 @@
 import { create } from "zustand";
-
-import type { Settings } from "@/lib/tauri/settings/types";
-
 import {
   getSettings,
   updateSettings as updateSettingsCommand,
 } from "@/lib/tauri/settings";
+import type { Settings } from "@/lib/tauri/settings/types";
 
 interface SettingsStore {
-  settings: Settings | null;
-  isLoading: boolean;
-  updateSettings: (updates: Partial<Settings>) => Promise<Settings>;
   initialize: () => Promise<void>;
+  isLoading: boolean;
+  settings: Settings | null;
+  updateSettings: (updates: Partial<Settings>) => Promise<Settings>;
 }
 
 export const useSettings = create<SettingsStore>((set) => ({

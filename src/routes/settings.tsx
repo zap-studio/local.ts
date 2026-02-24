@@ -1,13 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-
-import type { LogLevel } from "@/lib/tauri/settings/types";
-
 import { SettingRow } from "@/components/setting-row";
 import { SettingsSection } from "@/components/settings-section";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { LOG_LEVEL_OPTIONS, THEME_OPTIONS } from "@/constants/settings";
 import { useHandleSettings } from "@/hooks/use-handle-settings";
+import type { LogLevel } from "@/lib/tauri/settings/types";
 
 export const Route = createFileRoute("/settings")({
   component: SettingsPage,
@@ -45,127 +43,127 @@ function SettingsPage() {
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6 sm:space-y-8">
       <div>
-        <h1 className="text-xl font-bold sm:text-2xl">Settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground sm:mt-2 sm:text-base">
+        <h1 className="font-bold text-xl sm:text-2xl">Settings</h1>
+        <p className="mt-1 text-muted-foreground text-sm sm:mt-2 sm:text-base">
           Configure your application preferences here.
         </p>
       </div>
 
       {/* Appearance Section */}
       <SettingsSection
-        title="Appearance"
         description="Customize how the application looks"
+        title="Appearance"
       >
         <SettingRow
-          label="Theme"
           description="Select your preferred color scheme"
+          label="Theme"
         >
           <Select
-            value={theme}
+            className="w-full sm:w-40"
+            disabled={isSaving}
             onValueChange={(value) => handleUpdateSetting("theme", value)}
             options={THEME_OPTIONS}
-            disabled={isSaving}
-            className="w-full sm:w-40"
+            value={theme}
           />
         </SettingRow>
 
         <SettingRow
-          label="Sidebar Expanded"
           description="Keep the sidebar expanded by default"
           htmlFor="sidebar-expanded"
+          label="Sidebar Expanded"
         >
           <Switch
-            id="sidebar-expanded"
             checked={settings.sidebarExpanded}
+            disabled={isSaving}
+            id="sidebar-expanded"
             onCheckedChange={(checked) =>
               handleUpdateSetting("sidebarExpanded", checked)
             }
-            disabled={isSaving}
           />
         </SettingRow>
       </SettingsSection>
 
       {/* Behavior Section */}
       <SettingsSection
-        title="Behavior"
         description="Control how the application behaves"
+        title="Behavior"
       >
         <SettingRow
-          label="Show in System Tray"
           description="Show the application icon in the system tray"
           htmlFor="show-in-tray"
+          label="Show in System Tray"
         >
           <Switch
-            id="show-in-tray"
             checked={settings.showInTray}
-            onCheckedChange={handleTrayVisibilityChange}
             disabled={isSaving}
+            id="show-in-tray"
+            onCheckedChange={handleTrayVisibilityChange}
           />
         </SettingRow>
 
         <SettingRow
-          label="Launch at Login"
           description="Automatically start when you log in"
           htmlFor="launch-at-login"
+          label="Launch at Login"
         >
           <Switch
-            id="launch-at-login"
             checked={autostartEnabled}
-            onCheckedChange={handleAutostartChange}
             disabled={isSaving}
+            id="launch-at-login"
+            onCheckedChange={handleAutostartChange}
           />
         </SettingRow>
       </SettingsSection>
 
       {/* Notifications Section */}
       <SettingsSection
-        title="Notifications"
         description="Configure notification preferences"
+        title="Notifications"
       >
         <SettingRow
-          label="Enable Notifications"
           description="Allow the app to send you notifications"
           htmlFor="enable-notifications"
+          label="Enable Notifications"
         >
           <Switch
-            id="enable-notifications"
             checked={settings.enableNotifications}
-            onCheckedChange={handleNotificationChange}
             disabled={isSaving}
+            id="enable-notifications"
+            onCheckedChange={handleNotificationChange}
           />
         </SettingRow>
       </SettingsSection>
 
       {/* Developer Section */}
       <SettingsSection
-        title="Developer"
         description="Advanced settings for debugging and development"
+        title="Developer"
       >
         <SettingRow
-          label="Enable Logging"
           description="Enable detailed application logging"
           htmlFor="enable-logging"
+          label="Enable Logging"
         >
           <Switch
-            id="enable-logging"
             checked={settings.enableLogging}
+            disabled={isSaving}
+            id="enable-logging"
             onCheckedChange={(checked) =>
               handleUpdateSetting("enableLogging", checked)
             }
-            disabled={isSaving}
           />
         </SettingRow>
 
         <SettingRow
-          label="Log Level"
           description="Set the minimum log level to record"
+          label="Log Level"
         >
           <Select<LogLevel>
-            value={settings.logLevel}
+            className="w-full sm:w-40"
+            disabled={isSaving || !settings.enableLogging}
             onValueChange={(value) => handleUpdateSetting("logLevel", value)}
             options={LOG_LEVEL_OPTIONS}
-            disabled={isSaving || !settings.enableLogging}
-            className="w-full sm:w-40"
+            value={settings.logLevel}
           />
         </SettingRow>
       </SettingsSection>

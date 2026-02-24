@@ -7,7 +7,7 @@
     "build": "pnpm run generate-routes && tsc && vite build",
     "check": "ultracite check",
     "dev": "concurrently -k \"pnpm run watch-routes\" \"vite\"",
-    "format": "pnpm dlx ultracite fix",
+    "format": "ultracite fix",
     "generate-routes": "tsr generate",
     "lint": "pnpm dlx ultracite check",
     "preview": "vite preview",

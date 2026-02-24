@@ -5,9 +5,9 @@ import type { Settings } from "@/lib/tauri/settings/types";
 import { ensureNotificationPermission } from "./permissions";
 
 export interface NotificationOptions {
-  title: string;
   body?: string;
   icon?: string;
+  title: string;
 }
 
 /**

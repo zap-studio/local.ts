@@ -14,7 +14,7 @@ export function SidebarHeader({ expanded, onToggle }: SidebarHeaderProps) {
   return (
     <div
       className={cn(
-        "flex h-14 items-center gap-2 border-b border-sidebar-border px-3",
+        "flex h-14 items-center gap-2 border-sidebar-border border-b px-3",
         expanded ? "justify-between" : "justify-center"
       )}
     >
@@ -25,11 +25,11 @@ export function SidebarHeader({ expanded, onToggle }: SidebarHeaderProps) {
       )}
       <Tooltip content={expanded ? "Collapse sidebar" : "Expand sidebar"}>
         <Button
-          variant="ghost"
-          size="icon"
-          onClick={onToggle}
           aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}
           className="hidden h-9 w-9 shrink-0 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground md:inline-flex"
+          onClick={onToggle}
+          size="icon"
+          variant="ghost"
         >
           {expanded ? (
             <PanelLeftClose className="size-5" />

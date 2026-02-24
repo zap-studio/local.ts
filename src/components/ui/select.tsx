@@ -1,22 +1,21 @@
-import type { ComponentProps } from "react";
-
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { Check, ChevronDown } from "lucide-react";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
 interface SelectOption<T extends string = string> {
-  value: T;
   label: string;
+  value: T;
 }
 
 interface SelectProps<T extends string = string> {
-  value: T;
+  className?: string;
+  disabled?: boolean;
   onValueChange: (value: T) => void;
   options: SelectOption<T>[];
   placeholder?: string;
-  className?: string;
-  disabled?: boolean;
+  value: T;
 }
 
 export function Select<T extends string = string>({
@@ -37,9 +36,9 @@ export function Select<T extends string = string>({
 
   return (
     <BaseSelect.Root
-      value={value}
-      onValueChange={handleValueChange}
       disabled={disabled}
+      onValueChange={handleValueChange}
+      value={value}
     >
       <BaseSelect.Trigger
         className={cn(
@@ -61,7 +60,7 @@ export function Select<T extends string = string>({
           <BaseSelect.Popup
             className={cn(
               "min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md",
-              "animate-in fade-in-0 zoom-in-95"
+              "fade-in-0 zoom-in-95 animate-in"
             )}
           >
             {options.map((option) => (
@@ -84,7 +83,7 @@ function SelectItem({ children, className, ...props }: SelectItemProps) {
   return (
     <BaseSelect.Item
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none",
+        "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none",
         "focus:bg-accent focus:text-accent-foreground",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         className

@@ -4,14 +4,17 @@ import { cn } from "@/lib/utils";
 
 type LabelProps = ComponentProps<"label">;
 
-export function Label({ className, ...props }: LabelProps) {
+export function Label({ className, children, htmlFor, ...props }: LabelProps) {
   return (
     <label
       className={cn(
-        "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+        "font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
         className
       )}
+      htmlFor={htmlFor}
       {...props}
-    />
+    >
+      {children}
+    </label>
   );
 }

@@ -5,15 +5,17 @@ import type { Theme } from "@/lib/tauri/settings/types";
 import { useSettings } from "@/stores/settings";
 
 interface ThemeStore {
-  theme: Theme;
-  resolvedTheme: "light" | "dark";
-  setTheme: (theme: Theme) => Promise<void>;
   applyTheme: (theme: Theme) => void;
   initialize: () => void;
+  resolvedTheme: "light" | "dark";
+  setTheme: (theme: Theme) => Promise<void>;
+  theme: Theme;
 }
 
 function getSystemTheme(): "light" | "dark" {
-  if (typeof window === "undefined") return "light";
+  if (typeof window === "undefined") {
+    return "light";
+  }
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";

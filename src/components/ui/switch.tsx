@@ -3,11 +3,11 @@ import { Switch as BaseSwitch } from "@base-ui/react/switch";
 import { cn } from "@/lib/utils";
 
 interface SwitchProps {
-  id?: string;
   checked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
-  disabled?: boolean;
   className?: string;
+  disabled?: boolean;
+  id?: string;
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 export function Switch({
@@ -19,10 +19,7 @@ export function Switch({
 }: SwitchProps) {
   return (
     <BaseSwitch.Root
-      id={id}
       checked={checked}
-      onCheckedChange={onCheckedChange}
-      disabled={disabled}
       className={cn(
         "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
@@ -30,6 +27,9 @@ export function Switch({
         "data-checked:bg-primary data-unchecked:bg-input",
         className
       )}
+      disabled={disabled}
+      id={id}
+      onCheckedChange={onCheckedChange}
     >
       <BaseSwitch.Thumb
         className={cn(

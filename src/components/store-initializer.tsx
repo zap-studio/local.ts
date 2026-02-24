@@ -14,13 +14,13 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
   const [error, setError] = useState<Error | null>(null);
   const initializeSettings = useSettings((state) => state.initialize);
   const initializeTheme = useTheme((state) => state.initialize);
-
-  // Check if running in browser (not Tauri)
-  if (!isTauri()) {
-    return <NativeOnlyScreen />;
-  }
+  const isNativeApp = isTauri();
 
   useEffect(() => {
+    if (!isNativeApp) {
+      return;
+    }
+
     const init = async () => {
       try {
         await initializeSettings();
@@ -40,7 +40,7 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
     };
 
     init();
-  }, [initializeSettings, initializeTheme]);
+  }, [initializeSettings, initializeTheme, isNativeApp]);
 
   const handleRetry = async () => {
     setError(null);
@@ -60,6 +60,10 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
     return <InitializationError error={error} onRetry={handleRetry} />;
   }
 
+  if (!isNativeApp) {
+    return <NativeOnlyScreen />;
+  }
+
   if (!isInitialized) {
     return null;
   }
@@ -76,18 +80,18 @@ function InitializationError({ error, onRetry }: InitializationErrorProps) {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4 p-6">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-destructive">
+        <h1 className="font-bold text-2xl text-destructive">
           Initialization Error
         </h1>
         <p className="mt-2 text-muted-foreground">
           Failed to load application settings
         </p>
-        <p className="mt-1 text-sm text-muted-foreground">{error.message}</p>
+        <p className="mt-1 text-muted-foreground text-sm">{error.message}</p>
       </div>
       <button
-        type="button"
+        className="rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground text-sm hover:bg-primary/90"
         onClick={onRetry}
-        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+        type="button"
       >
         Retry
       </button>
@@ -98,13 +102,13 @@ function InitializationError({ error, onRetry }: InitializationErrorProps) {
 function NativeOnlyScreen() {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-6 p-6">
-      <div className="text-center flex flex-col items-center justify-center gap-2">
-        <h1 className="text-2xl font-bold">Native App Required</h1>
+      <div className="flex flex-col items-center justify-center gap-2 text-center">
+        <h1 className="font-bold text-2xl">Native App Required</h1>
         <p className="max-w-md text-muted-foreground">
           This application is designed to run as a native desktop or mobile app.
           It cannot run in a web browser.
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Please download and install the native application for your platform.
         </p>
       </div>

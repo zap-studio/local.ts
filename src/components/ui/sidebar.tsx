@@ -47,24 +47,24 @@ export function Sidebar() {
     <>
       {/* Mobile sidebar */}
       <SidebarMobile
+        bottomItems={SIDEBAR_BOTTOM_ITEMS}
         expanded={expanded}
         onToggle={toggleExpanded}
         topItems={SIDEBAR_TOP_ITEMS}
-        bottomItems={SIDEBAR_BOTTOM_ITEMS}
       />
 
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden h-screen flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300 md:flex",
+          "hidden h-screen flex-col border-sidebar-border border-r bg-sidebar transition-all duration-300 md:flex",
           expanded ? "md:w-64" : "md:w-16"
         )}
       >
         <SidebarHeader expanded={expanded} onToggle={toggleExpanded} />
-        <SidebarNav items={SIDEBAR_TOP_ITEMS} expanded={expanded} />
+        <SidebarNav expanded={expanded} items={SIDEBAR_TOP_ITEMS} />
         <SidebarNav
-          items={SIDEBAR_BOTTOM_ITEMS}
           expanded={expanded}
+          items={SIDEBAR_BOTTOM_ITEMS}
           variant="bottom"
         />
       </aside>

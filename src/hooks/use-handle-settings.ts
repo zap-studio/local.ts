@@ -5,15 +5,13 @@ import {
 } from "@tauri-apps/plugin-autostart";
 import { requestPermission } from "@tauri-apps/plugin-notification";
 import { useCallback, useEffect, useState } from "react";
-
-import type { Settings, Theme } from "@/lib/tauri/settings/types";
-
 import { useAsyncAction } from "@/hooks/use-async-action";
 import {
   getSettings,
   setTrayVisible,
   updateSettings,
 } from "@/lib/tauri/settings";
+import type { Settings, Theme } from "@/lib/tauri/settings/types";
 import { useTheme } from "@/stores/theme";
 
 export function useHandleSettings() {
@@ -47,7 +45,9 @@ export function useHandleSettings() {
 
   const handleUpdateSetting = useCallback(
     async <K extends keyof Settings>(key: K, value: Settings[K]) => {
-      if (!settings) return;
+      if (!settings) {
+        return;
+      }
 
       const previousSettings = settings;
       setSettings((prev) => (prev ? { ...prev, [key]: value } : null));
@@ -96,7 +96,9 @@ export function useHandleSettings() {
 
   const handleTrayVisibilityChange = useCallback(
     async (visible: boolean) => {
-      if (!settings) return;
+      if (!settings) {
+        return;
+      }
 
       const previousSettings = settings;
       setSettings((prev) => (prev ? { ...prev, showInTray: visible } : null));
@@ -120,7 +122,9 @@ export function useHandleSettings() {
 
   const handleNotificationChange = useCallback(
     async (enabled: boolean) => {
-      if (!settings) return;
+      if (!settings) {
+        return;
+      }
 
       const previousSettings = settings;
 

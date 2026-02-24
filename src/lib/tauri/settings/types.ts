@@ -3,13 +3,13 @@ export type Theme = "light" | "dark" | "system";
 export type LogLevel = "error" | "warn" | "info" | "debug" | "trace";
 
 export interface Settings {
-  theme: Theme;
-  sidebarExpanded: boolean;
-  showInTray: boolean;
-  launchAtLogin: boolean;
   enableLogging: boolean;
-  logLevel: LogLevel;
   enableNotifications: boolean;
+  launchAtLogin: boolean;
+  logLevel: LogLevel;
+  showInTray: boolean;
+  sidebarExpanded: boolean;
+  theme: Theme;
 }
 
 export type SettingsUpdate = Partial<Settings>;
