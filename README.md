@@ -51,6 +51,7 @@ vp run tauri dev
 - **Run checks** — `vp run check`
 - **Run tests** — `vp run test`
 - **Build** — `vp run build`
+- **Build the native shell** — `vp run tauri build`
 - **Run validation** — `vp run validate`
 - **Run custom cached workflows** — `vp run <task>`
 
