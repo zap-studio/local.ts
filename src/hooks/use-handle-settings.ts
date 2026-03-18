@@ -61,10 +61,10 @@ export function useHandleSettings() {
           onError: () => setSettings(previousSettings),
           errorMessage: `Failed to update ${String(key)}`,
           successMessage: "Settings updated",
-        }
+        },
       );
     },
-    [settings, setTheme, withSaving]
+    [settings, setTheme, withSaving],
   );
 
   const handleAutostartChange = useCallback(
@@ -82,10 +82,10 @@ export function useHandleSettings() {
           onError: () => setAutostartEnabled(previousValue),
           errorMessage: "Failed to update autostart setting",
           successMessage: enabled ? "Autostart enabled" : "Autostart disabled",
-        }
+        },
       );
     },
-    [autostartEnabled, withSaving]
+    [autostartEnabled, withSaving],
   );
 
   const handleTrayVisibilityChange = useCallback(
@@ -106,10 +106,10 @@ export function useHandleSettings() {
           onError: () => setSettings(previousSettings),
           errorMessage: "Failed to update tray visibility",
           successMessage: visible ? "System tray enabled" : "System tray disabled",
-        }
+        },
       );
     },
-    [settings, withSaving]
+    [settings, withSaving],
   );
 
   const handleNotificationChange = useCallback(
@@ -139,10 +139,10 @@ export function useHandleSettings() {
           onError: () => setSettings(previousSettings),
           errorMessage: "Failed to update notification settings",
           successMessage: enabled ? "Notifications enabled" : "Notifications disabled",
-        }
+        },
       );
     },
-    [settings, withSaving]
+    [settings, withSaving],
   );
 
   return {

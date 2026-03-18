@@ -27,7 +27,7 @@ export function SidebarNavItem({ item, expanded, onClick }: SidebarNavItemProps)
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "w-full text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         expanded ? "h-10 justify-start gap-3 px-3" : "h-10 w-10 justify-center px-0",
-        isActive && "bg-sidebar-accent text-sidebar-accent-foreground"
+        isActive && "bg-sidebar-accent text-sidebar-accent-foreground",
       )}
       onClick={onClick}
       to={item.href}

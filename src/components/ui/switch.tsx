@@ -19,7 +19,7 @@ export function Switch({ id, checked, onCheckedChange, disabled, className }: Sw
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "disabled:cursor-not-allowed disabled:opacity-50",
         "data-checked:bg-primary data-unchecked:bg-input",
-        className
+        className,
       )}
       disabled={disabled}
       id={id}
@@ -28,7 +28,7 @@ export function Switch({ id, checked, onCheckedChange, disabled, className }: Sw
       <BaseSwitch.Thumb
         className={cn(
           "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform",
-          "data-checked:translate-x-5 data-unchecked:translate-x-0"
+          "data-checked:translate-x-5 data-unchecked:translate-x-0",
         )}
       />
     </BaseSwitch.Root>

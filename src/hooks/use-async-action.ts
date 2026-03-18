@@ -16,7 +16,7 @@ export function useAsyncAction() {
         onSuccess?: () => void;
         errorMessage?: string;
         successMessage?: string;
-      }
+      },
     ): Promise<T | undefined> => {
       setIsSaving(true);
       try {
@@ -36,7 +36,7 @@ export function useAsyncAction() {
         setIsSaving(false);
       }
     },
-    []
+    [],
   );
 
   return [withSaving, isSaving] as const;

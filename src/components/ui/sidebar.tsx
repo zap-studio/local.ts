@@ -35,7 +35,7 @@ export function Sidebar() {
       {
         onError: () => setExpanded(previousExpanded),
         errorMessage: "Failed to persist sidebar state",
-      }
+      },
     );
   }, [expanded, withSaving]);
 
@@ -57,7 +57,7 @@ export function Sidebar() {
       <aside
         className={cn(
           "hidden h-screen flex-col border-sidebar-border border-r bg-sidebar transition-all duration-300 md:flex",
-          expanded ? "md:w-64" : "md:w-16"
+          expanded ? "md:w-64" : "md:w-16",
         )}
       >
         <SidebarHeader expanded={expanded} onToggle={toggleExpanded} />

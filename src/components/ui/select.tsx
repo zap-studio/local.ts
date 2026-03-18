@@ -41,7 +41,7 @@ export function Select<T extends string = string>({
           "inline-flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          className
+          className,
         )}
       >
         <BaseSelect.Value className="truncate text-foreground">
@@ -56,7 +56,7 @@ export function Select<T extends string = string>({
           <BaseSelect.Popup
             className={cn(
               "min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md",
-              "fade-in-0 zoom-in-95 animate-in"
+              "fade-in-0 zoom-in-95 animate-in",
             )}
           >
             {options.map((option) => (
@@ -82,7 +82,7 @@ function SelectItem({ children, className, ...props }: SelectItemProps) {
         "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none",
         "focus:bg-accent focus:text-accent-foreground",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
-        className
+        className,
       )}
       {...props}
     >
