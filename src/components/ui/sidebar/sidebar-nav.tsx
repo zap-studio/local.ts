@@ -9,12 +9,7 @@ interface SidebarNavProps {
   variant?: "top" | "bottom";
 }
 
-export function SidebarNav({
-  items,
-  expanded,
-  variant = "top",
-  onItemClick,
-}: SidebarNavProps) {
+export function SidebarNav({ items, expanded, variant = "top", onItemClick }: SidebarNavProps) {
   const isBottom = variant === "bottom";
 
   return (
@@ -22,12 +17,7 @@ export function SidebarNav({
       className={`flex flex-col gap-1 p-3 ${isBottom ? "border-sidebar-border border-t" : "flex-1"}`}
     >
       {items.map((item) => (
-        <SidebarNavItem
-          expanded={expanded}
-          item={item}
-          key={item.label}
-          onClick={onItemClick}
-        />
+        <SidebarNavItem expanded={expanded} item={item} key={item.label} onClick={onItemClick} />
       ))}
     </nav>
   );

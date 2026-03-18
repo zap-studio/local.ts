@@ -50,14 +50,8 @@ function SettingsPage() {
       </div>
 
       {/* Appearance Section */}
-      <SettingsSection
-        description="Customize how the application looks"
-        title="Appearance"
-      >
-        <SettingRow
-          description="Select your preferred color scheme"
-          label="Theme"
-        >
+      <SettingsSection description="Customize how the application looks" title="Appearance">
+        <SettingRow description="Select your preferred color scheme" label="Theme">
           <Select
             className="w-full sm:w-40"
             disabled={isSaving}
@@ -76,18 +70,13 @@ function SettingsPage() {
             checked={settings.sidebarExpanded}
             disabled={isSaving}
             id="sidebar-expanded"
-            onCheckedChange={(checked) =>
-              handleUpdateSetting("sidebarExpanded", checked)
-            }
+            onCheckedChange={(checked) => handleUpdateSetting("sidebarExpanded", checked)}
           />
         </SettingRow>
       </SettingsSection>
 
       {/* Behavior Section */}
-      <SettingsSection
-        description="Control how the application behaves"
-        title="Behavior"
-      >
+      <SettingsSection description="Control how the application behaves" title="Behavior">
         <SettingRow
           description="Show the application icon in the system tray"
           htmlFor="show-in-tray"
@@ -116,10 +105,7 @@ function SettingsPage() {
       </SettingsSection>
 
       {/* Notifications Section */}
-      <SettingsSection
-        description="Configure notification preferences"
-        title="Notifications"
-      >
+      <SettingsSection description="Configure notification preferences" title="Notifications">
         <SettingRow
           description="Allow the app to send you notifications"
           htmlFor="enable-notifications"
@@ -148,16 +134,11 @@ function SettingsPage() {
             checked={settings.enableLogging}
             disabled={isSaving}
             id="enable-logging"
-            onCheckedChange={(checked) =>
-              handleUpdateSetting("enableLogging", checked)
-            }
+            onCheckedChange={(checked) => handleUpdateSetting("enableLogging", checked)}
           />
         </SettingRow>
 
-        <SettingRow
-          description="Set the minimum log level to record"
-          label="Log Level"
-        >
+        <SettingRow description="Set the minimum log level to record" label="Log Level">
           <Select<LogLevel>
             className="w-full sm:w-40"
             disabled={isSaving || !settings.enableLogging}

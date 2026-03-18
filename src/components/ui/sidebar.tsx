@@ -62,11 +62,7 @@ export function Sidebar() {
       >
         <SidebarHeader expanded={expanded} onToggle={toggleExpanded} />
         <SidebarNav expanded={expanded} items={SIDEBAR_TOP_ITEMS} />
-        <SidebarNav
-          expanded={expanded}
-          items={SIDEBAR_BOTTOM_ITEMS}
-          variant="bottom"
-        />
+        <SidebarNav expanded={expanded} items={SIDEBAR_BOTTOM_ITEMS} variant="bottom" />
       </aside>
     </>
   );

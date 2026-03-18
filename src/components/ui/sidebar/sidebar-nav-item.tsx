@@ -15,11 +15,7 @@ interface SidebarNavItemProps {
   onClick?: () => void;
 }
 
-export function SidebarNavItem({
-  item,
-  expanded,
-  onClick,
-}: SidebarNavItemProps) {
+export function SidebarNavItem({ item, expanded, onClick }: SidebarNavItemProps) {
   const Icon = item.icon;
   const location = useLocation();
   const isActive = location.pathname === item.href;
@@ -30,9 +26,7 @@ export function SidebarNavItem({
         "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "w-full text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-        expanded
-          ? "h-10 justify-start gap-3 px-3"
-          : "h-10 w-10 justify-center px-0",
+        expanded ? "h-10 justify-start gap-3 px-3" : "h-10 w-10 justify-center px-0",
         isActive && "bg-sidebar-accent text-sidebar-accent-foreground"
       )}
       onClick={onClick}

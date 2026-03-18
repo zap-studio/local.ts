@@ -6,11 +6,7 @@ import {
 import { requestPermission } from "@tauri-apps/plugin-notification";
 import { useCallback, useEffect, useState } from "react";
 import { useAsyncAction } from "@/hooks/use-async-action";
-import {
-  getSettings,
-  setTrayVisible,
-  updateSettings,
-} from "@/lib/tauri/settings";
+import { getSettings, setTrayVisible, updateSettings } from "@/lib/tauri/settings";
 import type { Settings, Theme } from "@/lib/tauri/settings/types";
 import { useTheme } from "@/stores/theme";
 
@@ -40,7 +36,7 @@ export function useHandleSettings() {
       }
     };
 
-    loadSettings();
+    void loadSettings();
   }, []);
 
   const handleUpdateSetting = useCallback(
@@ -80,9 +76,7 @@ export function useHandleSettings() {
         async () => {
           await (enabled ? enableAutostart() : disableAutostart());
           await updateSettings({ launchAtLogin: enabled });
-          setSettings((prev) =>
-            prev ? { ...prev, launchAtLogin: enabled } : null
-          );
+          setSettings((prev) => (prev ? { ...prev, launchAtLogin: enabled } : null));
         },
         {
           onError: () => setAutostartEnabled(previousValue),
@@ -111,9 +105,7 @@ export function useHandleSettings() {
         {
           onError: () => setSettings(previousSettings),
           errorMessage: "Failed to update tray visibility",
-          successMessage: visible
-            ? "System tray enabled"
-            : "System tray disabled",
+          successMessage: visible ? "System tray enabled" : "System tray disabled",
         }
       );
     },
@@ -137,9 +129,7 @@ export function useHandleSettings() {
         }
       }
 
-      setSettings((prev) =>
-        prev ? { ...prev, enableNotifications: enabled } : null
-      );
+      setSettings((prev) => (prev ? { ...prev, enableNotifications: enabled } : null));
 
       await withSaving(
         async () => {
@@ -148,9 +138,7 @@ export function useHandleSettings() {
         {
           onError: () => setSettings(previousSettings),
           errorMessage: "Failed to update notification settings",
-          successMessage: enabled
-            ? "Notifications enabled"
-            : "Notifications disabled",
+          successMessage: enabled ? "Notifications enabled" : "Notifications disabled",
         }
       );
     },

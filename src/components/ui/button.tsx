@@ -15,10 +15,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
         secondary:
@@ -47,12 +45,7 @@ type ButtonProps = ComponentProps<typeof BaseButton> &
   };
 
 export function Button({ className, variant, size, ...props }: ButtonProps) {
-  return (
-    <BaseButton
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  );
+  return <BaseButton className={cn(buttonVariants({ variant, size, className }))} {...props} />;
 }
 
 export { buttonVariants };

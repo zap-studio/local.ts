@@ -14,10 +14,7 @@ export interface NotificationOptions {
  * Send a notification if enabled and permission is granted
  * Returns true if the notification was sent, false otherwise
  */
-export async function notify(
-  options: NotificationOptions,
-  settings: Settings
-): Promise<boolean> {
+export async function notify(options: NotificationOptions, settings: Settings): Promise<boolean> {
   // Check if notifications are enabled in settings
   if (!settings.enableNotifications) {
     return false;
@@ -43,9 +40,7 @@ export async function notify(
  * Send a notification without checking settings (for critical alerts)
  * Still requires permission
  */
-export async function notifyForced(
-  options: NotificationOptions
-): Promise<boolean> {
+export async function notifyForced(options: NotificationOptions): Promise<boolean> {
   const granted = await ensureNotificationPermission();
   if (granted !== "granted") {
     return false;

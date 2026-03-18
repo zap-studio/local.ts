@@ -10,7 +10,7 @@ import { routeTree } from "./routeTree.gen";
 import "./styles/globals.css";
 
 // Attach console to forward Rust logs to browser devtools
-attachConsole();
+void attachConsole();
 
 const router = createRouter({ routeTree });
 

@@ -10,13 +10,7 @@ interface SwitchProps {
   onCheckedChange?: (checked: boolean) => void;
 }
 
-export function Switch({
-  id,
-  checked,
-  onCheckedChange,
-  disabled,
-  className,
-}: SwitchProps) {
+export function Switch({ id, checked, onCheckedChange, disabled, className }: SwitchProps) {
   return (
     <BaseSwitch.Root
       checked={checked}

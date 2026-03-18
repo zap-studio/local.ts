@@ -12,12 +12,7 @@ interface SidebarMobileProps {
   topItems: readonly SidebarItem[];
 }
 
-export function SidebarMobile({
-  expanded,
-  onToggle,
-  topItems,
-  bottomItems,
-}: SidebarMobileProps) {
+export function SidebarMobile({ expanded, onToggle, topItems, bottomItems }: SidebarMobileProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const openMobileSidebar = useCallback(() => {
@@ -109,12 +104,7 @@ function MobileSidebarPanel({
 
       <SidebarHeader expanded={expanded} onToggle={onToggle} />
       <SidebarNav expanded={expanded} items={topItems} onItemClick={onClose} />
-      <SidebarNav
-        expanded={expanded}
-        items={bottomItems}
-        onItemClick={onClose}
-        variant="bottom"
-      />
+      <SidebarNav expanded={expanded} items={bottomItems} onItemClick={onClose} variant="bottom" />
     </aside>
   );
 }

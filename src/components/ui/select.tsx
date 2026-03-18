@@ -35,11 +35,7 @@ export function Select<T extends string = string>({
   };
 
   return (
-    <BaseSelect.Root
-      disabled={disabled}
-      onValueChange={handleValueChange}
-      value={value}
-    >
+    <BaseSelect.Root disabled={disabled} onValueChange={handleValueChange} value={value}>
       <BaseSelect.Trigger
         className={cn(
           "inline-flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm",
