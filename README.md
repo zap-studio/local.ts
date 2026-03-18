@@ -29,17 +29,31 @@ git clone https://github.com/zap-studio/local.ts.git my-app
 cd my-app
 
 # Install dependencies
-pnpm install
+vp install
 
 # Run in development mode
-pnpm run tauri dev
+vp run tauri dev
 ```
 
 ### Prerequisites
 
+- [Vite+](https://viteplus.dev/) (`vp`)
 - [Node.js](https://nodejs.org/) (v18+)
 - [Rust](https://www.rust-lang.org/tools/install)
-- [pnpm](https://pnpm.io/) (recommended)
+- [pnpm](https://pnpm.io/) (used via the root `packageManager`)
+
+## Tooling
+
+- **Install dependencies** — `vp install`
+- **Run checks** — `vp check`
+- **Run tests** — `vp test`
+- **Build** — `vp build`
+- **Run app scripts** — `vp run <script>`
+
+## Project Layout
+
+- **Frontend toolchain** lives in the repository root and is managed with Vite+.
+- **Rust/Tauri app** lives in `src-tauri/` and is managed with Cargo/Tauri directly.
 
 ## Documentation
 
@@ -51,4 +65,4 @@ For complete documentation, guides, and API references, visit: **[https://www.za
 - **Desktop** — Tauri v2 (macOS, Windows, Linux, iOS, Android)
 - **Backend** — Rust with Diesel ORM
 - **Database** — SQLite
-- **Build** — Vite, Turborepo, pnpm
+- **Build & Tooling** — Vite+, Vite, pnpm
