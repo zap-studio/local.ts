@@ -20,6 +20,12 @@ export default defineConfig({
   staged: {
     "*.{js,jsx,ts,tsx,json,jsonc,css,html}": "vp check --fix",
   },
+  test: {
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html"],
+    },
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
@@ -40,14 +46,6 @@ export default defineConfig({
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
-    },
-  },
-
-  // Config for testing
-  test: {
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "html"],
     },
   },
 });
