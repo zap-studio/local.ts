@@ -1,14 +1,16 @@
-# Ultracite Code Standards
+# Vite+ Code Standards
 
-This project uses **Ultracite**, a zero-config Biome preset that enforces strict code quality standards through automated formatting and linting.
+This project uses **Vite+** as the unified toolchain for formatting, linting, type-checking, testing, and builds.
 
 ## Quick Reference
 
-- **Format code**: `pnpm dlx ultracite fix`
-- **Check for issues**: `pnpm dlx ultracite check`
-- **Diagnose setup**: `pnpm dlx ultracite doctor`
+- **Format code**: `pnpm exec vp fmt . --write`
+- **Check for issues**: `pnpm exec vp check`
+- **Auto-fix issues**: `pnpm exec vp check --fix`
+- **Run tests**: `pnpm exec vp test`
+- **Build**: `pnpm exec vp build`
 
-Biome (the underlying engine) provides extremely fast Rust-based linting and formatting. Most issues are automatically fixable.
+Vite+ uses Oxc-based tooling for formatting and linting, plus integrated type-checking and test/build commands.
 
 ---
 
@@ -110,11 +112,11 @@ Write code that is **accessible, performant, type-safe, and maintainable**. Focu
 - Don't use `.only` or `.skip` in committed code
 - Keep test suites reasonably flat - avoid excessive `describe` nesting
 
-## When Biome Can't Help
+## When Static Checks Can't Help
 
-Biome's linter will catch most issues automatically. Focus your attention on:
+`vp check` catches most mechanical issues automatically. Focus your attention on:
 
-1. **Business logic correctness** - Biome can't validate your algorithms
+1. **Business logic correctness** - Static tooling can't validate your algorithms
 2. **Meaningful naming** - Use descriptive names for functions, variables, and types
 3. **Architecture decisions** - Component structure, data flow, and API design
 4. **Edge cases** - Handle boundary conditions and error states
@@ -123,4 +125,4 @@ Biome's linter will catch most issues automatically. Focus your attention on:
 
 ---
 
-Most formatting and common issues are automatically fixed by Biome. Run `pnpm dlx ultracite fix` before committing to ensure compliance.
+Most formatting and common issues are automatically fixed by Vite+. Run `pnpm exec vp check --fix` before committing to ensure compliance.
