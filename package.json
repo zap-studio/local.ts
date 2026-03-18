@@ -4,17 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vp exec tsr generate && vp build",
+    "build": "vp run app:build",
     "check": "vp check",
     "dev": "concurrently -k \"vp exec tsr watch\" \"vp dev\"",
     "fix": "vp check --fix",
     "generate-routes": "vp exec tsr generate",
     "preview": "vp preview",
-    "tauri": "tauri",
+    "tauri": "vp exec tauri",
     "test": "vp test",
     "test:coverage": "vp test run --coverage",
     "test:watch": "vp test watch",
-    "validate": "vp test && vp exec tsr generate && vp build && vp check",
+    "validate": "vp run app:validate",
     "watch-routes": "vp exec tsr watch"
   },
   "dependencies": {

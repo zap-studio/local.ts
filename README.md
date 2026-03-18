@@ -32,6 +32,9 @@ cd my-app
 vp install
 
 # Run in development mode
+vp run dev
+
+# Run the Tauri shell
 vp run tauri dev
 ```
 
