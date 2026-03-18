@@ -48,15 +48,18 @@ vp run tauri dev
 ## Tooling
 
 - **Install dependencies** — `vp install`
-- **Run checks** — `vp check`
-- **Run tests** — `vp test`
-- **Build** — `vp build`
-- **Run app scripts** — `vp run <script>`
+- **Run checks** — `vp run check`
+- **Run tests** — `vp run test`
+- **Build** — `vp run build`
+- **Run validation** — `vp run validate`
+- **Run custom cached workflows** — `vp run <task>`
 
 ## Project Layout
 
 - **Frontend toolchain** lives in the repository root and is managed with Vite+.
 - **Rust/Tauri app** lives in `src-tauri/` and is managed with Cargo/Tauri directly.
+- **Normal project entrypoints** are exposed as `package.json` scripts.
+- **Vite Task** is used only for workflows that benefit from task dependencies or caching, such as `app:build`, `app:validate`, and `routes`.
 
 ## Documentation
 

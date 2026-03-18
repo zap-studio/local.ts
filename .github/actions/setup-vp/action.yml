@@ -1,5 +1,5 @@
 name: Setup vp
-description: Install Vite+, restore dependency cache, and install workspace dependencies.
+description: Install Vite+, restore dependency cache, and install project dependencies.
 
 inputs:
   version:
