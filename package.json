@@ -15,9 +15,8 @@
     "tauri": "tauri",
     "test": "vp test",
     "test:coverage": "vp test run --coverage",
-    "test:ui": "vp test run --ui",
     "test:watch": "vp test watch",
-    "validate": "vp check && vp test && vp run build",
+    "validate": "vp test && vp run build && vp check",
     "watch-routes": "vp exec tsr watch"
   },
   "dependencies": {
