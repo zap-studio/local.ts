@@ -104,7 +104,7 @@ importers:
         specifier: npm:@voidzero-dev/vite-plus-core@^0.1.12
         version: '@voidzero-dev/vite-plus-core@0.1.12(@types/node@25.5.0)(esbuild@0.27.4)(jiti@2.6.1)(tsx@4.21.0)(typescript@5.9.3)'
       vite-plus:
-        specifier: ^0.1.12
+        specifier: latest
         version: 0.1.12(@types/node@25.5.0)(@vitest/ui@4.1.0)(@voidzero-dev/vite-plus-core@0.1.12(@types/node@25.5.0)(esbuild@0.27.4)(jiti@2.6.1)(tsx@4.21.0)(typescript@5.9.3))(esbuild@0.27.4)(jiti@2.6.1)(tsx@4.21.0)(typescript@5.9.3)
       vitest:
         specifier: npm:@voidzero-dev/vite-plus-test@^0.1.12

@@ -18,7 +18,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   staged: {
-    "*.{js,jsx,ts,tsx,json,jsonc,css,html}": "vp check --fix",
+    "*": "vp check --fix",
   },
   test: {
     coverage: {
