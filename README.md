@@ -43,24 +43,24 @@ vp run tauri dev
 - [Vite+](https://viteplus.dev/) (`vp`)
 - [Node.js](https://nodejs.org/) (v18+)
 - [Rust](https://www.rust-lang.org/tools/install)
-- [pnpm](https://pnpm.io/) (used via the root `packageManager`)
+- [pnpm](https://pnpm.io/) (used internally via the root `packageManager`)
 
 ## Tooling
 
 - **Install dependencies** — `vp install`
-- **Run checks** — `vp run check`
-- **Run tests** — `vp run test`
-- **Build** — `vp run build`
+- **Run checks** — `vp check`
+- **Run tests** — `vp test`
+- **Build** — `vp build`
 - **Build the native shell** — `vp run tauri build`
 - **Run validation** — `vp run validate`
-- **Run custom cached workflows** — `vp run <task>`
+- **Regenerate the route tree manually** — `vp run generate-routes`
 
 ## Project Layout
 
 - **Frontend toolchain** lives in the repository root and is managed with Vite+.
 - **Rust/Tauri app** lives in `src-tauri/` and is managed with Cargo/Tauri directly.
 - **Normal project entrypoints** are exposed as `package.json` scripts.
-- **Vite Task** is used only for workflows that benefit from task dependencies or caching, such as `app:build`, `app:validate`, and `routes`.
+- **TanStack Router** route generation is handled by the Vite plugin during dev/build. The `generate-routes` script exists only as a manual recovery/debug escape hatch.
 
 ## Documentation
 

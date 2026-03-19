@@ -17,22 +17,6 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  run: {
-    tasks: {
-      routes: {
-        command: "vp exec tsr generate",
-      },
-      "app:build": {
-        command: "vp build",
-        dependsOn: ["routes"],
-      },
-      "app:validate": {
-        command: "vp test && vp check",
-        dependsOn: ["app:build"],
-        cache: false,
-      },
-    },
-  },
   staged: {
     "*.{js,jsx,ts,tsx,json,jsonc,css,html}": "vp check --fix",
   },
