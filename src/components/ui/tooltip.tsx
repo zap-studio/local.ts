@@ -50,7 +50,7 @@ function TooltipPopup({ children, className, ...props }: TooltipPopupProps) {
         "z-50 rounded-md bg-primary px-3 py-1.5 text-primary-foreground text-sm shadow-md",
         "fade-in-0 zoom-in-95 animate-in",
         "data-ending-style:fade-out-0 data-ending-style:zoom-out-95 data-ending-style:animate-out",
-        className
+        className,
       )}
       {...props}
     >

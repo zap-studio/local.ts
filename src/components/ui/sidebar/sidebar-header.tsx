@@ -15,13 +15,11 @@ export function SidebarHeader({ expanded, onToggle }: SidebarHeaderProps) {
     <div
       className={cn(
         "flex h-14 items-center gap-2 border-sidebar-border border-b px-3",
-        expanded ? "justify-between" : "justify-center"
+        expanded ? "justify-between" : "justify-center",
       )}
     >
       {expanded && (
-        <span className="truncate font-semibold text-sidebar-foreground">
-          {APP_TITLE}
-        </span>
+        <span className="truncate font-semibold text-sidebar-foreground">{APP_TITLE}</span>
       )}
       <Tooltip content={expanded ? "Collapse sidebar" : "Expand sidebar"}>
         <Button
@@ -31,11 +29,7 @@ export function SidebarHeader({ expanded, onToggle }: SidebarHeaderProps) {
           size="icon"
           variant="ghost"
         >
-          {expanded ? (
-            <PanelLeftClose className="size-5" />
-          ) : (
-            <PanelLeft className="size-5" />
-          )}
+          {expanded ? <PanelLeftClose className="size-5" /> : <PanelLeft className="size-5" />}
         </Button>
       </Tooltip>
     </div>

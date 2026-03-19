@@ -4,11 +4,7 @@ interface SettingsSectionProps {
   title: string;
 }
 
-export function SettingsSection({
-  title,
-  description,
-  children,
-}: SettingsSectionProps) {
+export function SettingsSection({ title, description, children }: SettingsSectionProps) {
   return (
     <section className="space-y-4">
       <div className="border-border border-b pb-2">

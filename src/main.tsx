@@ -10,7 +10,7 @@ import { routeTree } from "./routeTree.gen";
 import "./styles/globals.css";
 
 // Attach console to forward Rust logs to browser devtools
-attachConsole();
+void attachConsole();
 
 const router = createRouter({ routeTree });
 
@@ -26,5 +26,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <RouterProvider router={router} />
       <Toaster position={"bottom-right"} />
     </StoreInitializer>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

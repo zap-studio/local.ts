@@ -6,11 +6,7 @@ import {
 import { requestPermission } from "@tauri-apps/plugin-notification";
 import { useCallback, useEffect, useState } from "react";
 import { useAsyncAction } from "@/hooks/use-async-action";
-import {
-  getSettings,
-  setTrayVisible,
-  updateSettings,
-} from "@/lib/tauri/settings";
+import { getSettings, setTrayVisible, updateSettings } from "@/lib/tauri/settings";
 import type { Settings, Theme } from "@/lib/tauri/settings/types";
 import { useTheme } from "@/stores/theme";
 
@@ -40,7 +36,7 @@ export function useHandleSettings() {
       }
     };
 
-    loadSettings();
+    void loadSettings();
   }, []);
 
   const handleUpdateSetting = useCallback(
@@ -65,10 +61,10 @@ export function useHandleSettings() {
           onError: () => setSettings(previousSettings),
           errorMessage: `Failed to update ${String(key)}`,
           successMessage: "Settings updated",
-        }
+        },
       );
     },
-    [settings, setTheme, withSaving]
+    [settings, setTheme, withSaving],
   );
 
   const handleAutostartChange = useCallback(
@@ -80,18 +76,16 @@ export function useHandleSettings() {
         async () => {
           await (enabled ? enableAutostart() : disableAutostart());
           await updateSettings({ launchAtLogin: enabled });
-          setSettings((prev) =>
-            prev ? { ...prev, launchAtLogin: enabled } : null
-          );
+          setSettings((prev) => (prev ? { ...prev, launchAtLogin: enabled } : null));
         },
         {
           onError: () => setAutostartEnabled(previousValue),
           errorMessage: "Failed to update autostart setting",
           successMessage: enabled ? "Autostart enabled" : "Autostart disabled",
-        }
+        },
       );
     },
-    [autostartEnabled, withSaving]
+    [autostartEnabled, withSaving],
   );
 
   const handleTrayVisibilityChange = useCallback(
@@ -111,13 +105,11 @@ export function useHandleSettings() {
         {
           onError: () => setSettings(previousSettings),
           errorMessage: "Failed to update tray visibility",
-          successMessage: visible
-            ? "System tray enabled"
-            : "System tray disabled",
-        }
+          successMessage: visible ? "System tray enabled" : "System tray disabled",
+        },
       );
     },
-    [settings, withSaving]
+    [settings, withSaving],
   );
 
   const handleNotificationChange = useCallback(
@@ -137,9 +129,7 @@ export function useHandleSettings() {
         }
       }
 
-      setSettings((prev) =>
-        prev ? { ...prev, enableNotifications: enabled } : null
-      );
+      setSettings((prev) => (prev ? { ...prev, enableNotifications: enabled } : null));
 
       await withSaving(
         async () => {
@@ -148,13 +138,11 @@ export function useHandleSettings() {
         {
           onError: () => setSettings(previousSettings),
           errorMessage: "Failed to update notification settings",
-          successMessage: enabled
-            ? "Notifications enabled"
-            : "Notifications disabled",
-        }
+          successMessage: enabled ? "Notifications enabled" : "Notifications disabled",
+        },
       );
     },
-    [settings, withSaving]
+    [settings, withSaving],
   );
 
   return {

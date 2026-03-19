@@ -39,7 +39,7 @@ export function StoreInitializer({ children }: StoreInitializerProps) {
       }
     };
 
-    init();
+    void init();
   }, [initializeSettings, initializeTheme, isNativeApp]);
 
   const handleRetry = async () => {
@@ -80,12 +80,8 @@ function InitializationError({ error, onRetry }: InitializationErrorProps) {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4 p-6">
       <div className="text-center">
-        <h1 className="font-bold text-2xl text-destructive">
-          Initialization Error
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Failed to load application settings
-        </p>
+        <h1 className="font-bold text-2xl text-destructive">Initialization Error</h1>
+        <p className="mt-2 text-muted-foreground">Failed to load application settings</p>
         <p className="mt-1 text-muted-foreground text-sm">{error.message}</p>
       </div>
       <button
@@ -105,8 +101,8 @@ function NativeOnlyScreen() {
       <div className="flex flex-col items-center justify-center gap-2 text-center">
         <h1 className="font-bold text-2xl">Native App Required</h1>
         <p className="max-w-md text-muted-foreground">
-          This application is designed to run as a native desktop or mobile app.
-          It cannot run in a web browser.
+          This application is designed to run as a native desktop or mobile app. It cannot run in a
+          web browser.
         </p>
         <p className="text-muted-foreground text-sm">
           Please download and install the native application for your platform.

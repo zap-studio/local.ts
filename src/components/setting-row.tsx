@@ -7,12 +7,7 @@ interface SettingRowProps {
   label: string;
 }
 
-export function SettingRow({
-  label,
-  description,
-  htmlFor,
-  children,
-}: SettingRowProps) {
+export function SettingRow({ label, description, htmlFor, children }: SettingRowProps) {
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <div className="min-w-0 space-y-0.5">
