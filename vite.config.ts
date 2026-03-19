@@ -18,10 +18,6 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   run: {
-    cache: {
-      scripts: false,
-      tasks: true,
-    },
     tasks: {
       routes: {
         command: "vp exec tsr generate",
