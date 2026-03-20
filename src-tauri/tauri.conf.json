@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "dev.zapstudio.local-ts",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "vp dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm build",
+    "beforeBuildCommand": "vp build",
     "frontendDist": "../dist"
   },
   "app": {

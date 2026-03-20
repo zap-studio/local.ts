@@ -31,11 +31,8 @@ cd my-app
 # Install dependencies
 vp install
 
-# Run in development mode
-vp run dev
-
 # Run the Tauri shell
-vp run tauri dev
+vp exec tauri dev
 ```
 
 ### Prerequisites
@@ -51,16 +48,16 @@ vp run tauri dev
 - **Run checks** — `vp check`
 - **Run tests** — `vp test`
 - **Build** — `vp build`
-- **Build the native shell** — `vp run tauri build`
-- **Run validation** — `vp run validate`
-- **Regenerate the route tree manually** — `vp run generate-routes`
+- **Build the native shell** — `vp exec tauri build`
+- **Run a full validation pass** — `vp test && vp check && vp build`
+- **Regenerate the route tree manually** — `vp exec tsr generate`
 
 ## Project Layout
 
 - **Frontend toolchain** lives in the repository root and is managed with Vite+.
 - **Rust/Tauri app** lives in `src-tauri/` and is managed with Cargo/Tauri directly.
-- **Normal project entrypoints** are exposed as `package.json` scripts.
-- **TanStack Router** route generation is handled by the Vite plugin during dev/build. The `generate-routes` script exists only as a manual recovery/debug escape hatch.
+- **Normal day-to-day workflows** use direct `vp` commands such as `vp dev`, `vp build`, `vp check`, and `vp test`.
+- **TanStack Router** route generation is handled by the Vite plugin during dev/build. `vp exec tsr generate` exists only as a manual recovery/debug escape hatch.
 
 ## Documentation
 
