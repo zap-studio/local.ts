@@ -32,7 +32,7 @@ export default defineConfig({
     sortImports: {},
     sortPackageJson: true,
     sortTailwindcss: {
-      functions: ["clsx", "cn", "cva"],
+      functions: ["clsx", "cn", "cva", "tw"],
       stylesheet: "./src/styles/app.css",
     },
   },
