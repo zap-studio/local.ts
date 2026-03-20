@@ -5,6 +5,7 @@ import {
 } from "@tauri-apps/plugin-autostart";
 import { requestPermission } from "@tauri-apps/plugin-notification";
 import { useCallback, useEffect, useState } from "react";
+
 import { useAsyncAction } from "@/hooks/use-async-action";
 import { getSettings, setTrayVisible, updateSettings } from "@/lib/tauri/settings";
 import type { Settings, Theme } from "@/lib/tauri/settings/types";

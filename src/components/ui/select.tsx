@@ -39,7 +39,7 @@ export function Select<T extends string = string>({
       <BaseSelect.Trigger
         className={cn(
           "inline-flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none",
           "disabled:cursor-not-allowed disabled:opacity-50",
           className,
         )}
@@ -56,7 +56,7 @@ export function Select<T extends string = string>({
           <BaseSelect.Popup
             className={cn(
               "min-w-32 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md",
-              "fade-in-0 zoom-in-95 animate-in",
+              "animate-in fade-in-0 zoom-in-95",
             )}
           >
             {options.map((option) => (
@@ -79,7 +79,7 @@ function SelectItem({ children, className, ...props }: SelectItemProps) {
   return (
     <BaseSelect.Item
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none",
+        "relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none select-none",
         "focus:bg-accent focus:text-accent-foreground",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         className,

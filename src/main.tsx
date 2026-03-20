@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import { StoreInitializer } from "@/components/store-initializer";
 
 import { routeTree } from "./routeTree.gen";
+
 import "./styles/app.css";
 
 // Attach console to forward Rust logs to browser devtools

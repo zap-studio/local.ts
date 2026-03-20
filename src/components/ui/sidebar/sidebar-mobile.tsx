@@ -1,5 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { useCallback, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { SidebarHeader } from "@/components/ui/sidebar/sidebar-header";
 import { SidebarNav } from "@/components/ui/sidebar/sidebar-nav";
@@ -91,7 +92,7 @@ function MobileSidebarPanel({
   onClose,
 }: MobileSidebarPanelProps) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-sidebar-border border-r bg-sidebar md:hidden">
+    <aside className="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-sidebar-border bg-sidebar md:hidden">
       <Button
         aria-label="Close menu"
         className="absolute top-2 right-2 z-50"

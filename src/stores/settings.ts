@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import { getSettings, updateSettings as updateSettingsCommand } from "@/lib/tauri/settings";
 import type { Settings } from "@/lib/tauri/settings/types";
 

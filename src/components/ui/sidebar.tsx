@@ -56,7 +56,7 @@ export function Sidebar() {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden h-screen flex-col border-sidebar-border border-r bg-sidebar transition-all duration-300 md:flex",
+          "hidden h-screen flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300 md:flex",
           expanded ? "md:w-64" : "md:w-16",
         )}
       >

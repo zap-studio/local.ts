@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+
 import { SettingRow } from "@/components/setting-row";
 import { SettingsSection } from "@/components/settings-section";
 import { Select } from "@/components/ui/select";
@@ -43,8 +44,8 @@ function SettingsPage() {
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6 sm:space-y-8">
       <div>
-        <h1 className="font-bold text-xl sm:text-2xl">Settings</h1>
-        <p className="mt-1 text-muted-foreground text-sm sm:mt-2 sm:text-base">
+        <h1 className="text-xl font-bold sm:text-2xl">Settings</h1>
+        <p className="mt-1 text-sm text-muted-foreground sm:mt-2 sm:text-base">
           Configure your application preferences here.
         </p>
       </div>

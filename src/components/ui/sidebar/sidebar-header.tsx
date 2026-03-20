@@ -14,7 +14,7 @@ export function SidebarHeader({ expanded, onToggle }: SidebarHeaderProps) {
   return (
     <div
       className={cn(
-        "flex h-14 items-center gap-2 border-sidebar-border border-b px-3",
+        "flex h-14 items-center gap-2 border-b border-sidebar-border px-3",
         expanded ? "justify-between" : "justify-center",
       )}
     >

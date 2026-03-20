@@ -1,7 +1,6 @@
 import { create } from "zustand";
 
 import type { Theme } from "@/lib/tauri/settings/types";
-
 import { useSettings } from "@/stores/settings";
 
 interface ThemeStore {
