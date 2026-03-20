@@ -38,21 +38,8 @@ jobs:
             librsvg2-dev \
             patchelf
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-
-      - name: Setup pnpm cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: "pnpm"
+      - name: Setup vp
+        uses: ./.github/actions/setup-vp
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -63,9 +50,6 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
-
-      - name: Install frontend dependencies
-        run: pnpm install
 
       - uses: tauri-apps/tauri-action@v0
         env:
