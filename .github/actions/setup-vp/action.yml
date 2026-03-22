@@ -9,7 +9,7 @@ inputs:
   node-version:
     description: Node.js version to install with Vite+
     required: false
-    default: "24"
+    default: lts
   run-install:
     description: Whether to run vp install after setup
     required: false
